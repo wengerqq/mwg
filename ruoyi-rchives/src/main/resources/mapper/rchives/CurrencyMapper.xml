@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.currency.mapper.CurrencyMapper">
+    
+    <resultMap type="Currency" id="CurrencyResult">
+        <result property="id"    column="id"    />
+        <result property="currencyName"    column="currency_name"    />
+        <result property="currencyCode"    column="currency_code"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="operatorId"    column="operator_id"    />
+    </resultMap>
+
+    <sql id="selectCurrencyVo">
+        select id, currency_name, currency_code, create_time, update_time, operator_id from currency
+    </sql>
+
+    <select id="selectCurrencyList" parameterType="Currency" resultMap="CurrencyResult">
+        <include refid="selectCurrencyVo"/>
+        <where>  
+            <if test="currencyName != null  and currencyName != ''"> and currency_name like concat('%', #{currencyName}, '%')</if>
+            <if test="currencyCode != null  and currencyCode != ''"> and currency_code = #{currencyCode}</if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCurrencyById" parameterType="Long" resultMap="CurrencyResult">
+        <include refid="selectCurrencyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCurrency" parameterType="Currency" useGeneratedKeys="true" keyProperty="id">
+        insert into currency
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="currencyName != null">currency_name,</if>
+            <if test="currencyCode != null">currency_code,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="operatorId != null">operator_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="currencyName != null">#{currencyName},</if>
+            <if test="currencyCode != null">#{currencyCode},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCurrency" parameterType="Currency">
+        update currency
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="currencyName != null">currency_name = #{currencyName},</if>
+            <if test="currencyCode != null">currency_code = #{currencyCode},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCurrencyById" parameterType="Long">
+        delete from currency where id = #{id}
+    </delete>
+
+    <delete id="deleteCurrencyByIds" parameterType="String">
+        delete from currency where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

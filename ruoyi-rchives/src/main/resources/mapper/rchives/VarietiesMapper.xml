@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.varieties.mapper.VarietiesMapper">
+    
+    <resultMap type="Varieties" id="VarietiesResult">
+        <result property="id"    column="id"    />
+        <result property="varietiesName"    column="varieties_name"    />
+        <result property="varietiesCodeEn"    column="varieties_code_en"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="operatorId"    column="operator_id"    />
+    </resultMap>
+
+    <sql id="selectVarietiesVo">
+        select id, varieties_name, varieties_code_en, create_time, update_time, operator_id from varieties
+    </sql>
+
+    <select id="selectVarietiesList" parameterType="Varieties" resultMap="VarietiesResult">
+        <include refid="selectVarietiesVo"/>
+        <where>  
+            <if test="varietiesName != null  and varietiesName != ''"> and varieties_name like concat('%', #{varietiesName}, '%')</if>
+            <if test="varietiesCodeEn != null  and varietiesCodeEn != ''"> and varieties_code_en = #{varietiesCodeEn}</if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+        </where>
+    </select>
+    
+    <select id="selectVarietiesById" parameterType="Long" resultMap="VarietiesResult">
+        <include refid="selectVarietiesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertVarieties" parameterType="Varieties" useGeneratedKeys="true" keyProperty="id">
+        insert into varieties
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="varietiesName != null">varieties_name,</if>
+            <if test="varietiesCodeEn != null">varieties_code_en,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="operatorId != null">operator_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="varietiesName != null">#{varietiesName},</if>
+            <if test="varietiesCodeEn != null">#{varietiesCodeEn},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVarieties" parameterType="Varieties">
+        update varieties
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="varietiesName != null">varieties_name = #{varietiesName},</if>
+            <if test="varietiesCodeEn != null">varieties_code_en = #{varietiesCodeEn},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVarietiesById" parameterType="Long">
+        delete from varieties where id = #{id}
+    </delete>
+
+    <delete id="deleteVarietiesByIds" parameterType="String">
+        delete from varieties where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

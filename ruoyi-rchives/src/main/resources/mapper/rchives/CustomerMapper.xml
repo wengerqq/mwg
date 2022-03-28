@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.customer.mapper.CustomerMapper">
+    
+    <resultMap type="Customer" id="CustomerResult">
+        <result property="id"    column="id"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="contacts"    column="contacts"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="fax"    column="fax"    />
+        <result property="openingReceivable"    column="opening_receivable"    />
+        <result property="closingReceivable"    column="closing_receivable"    />
+        <result property="taxpayerIdentificationNumber"    column="taxpayer_identification_number"    />
+        <result property="taxRate"    column="tax_rate"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="accountNumber"    column="account_number"    />
+        <result property="address"    column="address"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="operatorId"    column="operator_id"    />
+    </resultMap>
+
+    <sql id="selectCustomerVo">
+        select id, customer_name, contacts, phone, email, fax, opening_receivable, closing_receivable, taxpayer_identification_number, tax_rate, bank_name, account_number, address, remarks, create_time, update_time, operator_id from customer
+    </sql>
+
+    <select id="selectCustomerList" parameterType="Customer" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        <where>  
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="contacts != null  and contacts != ''"> and contacts = #{contacts}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="fax != null  and fax != ''"> and fax = #{fax}</if>
+            <if test="openingReceivable != null  and openingReceivable != ''"> and opening_receivable = #{openingReceivable}</if>
+            <if test="closingReceivable != null  and closingReceivable != ''"> and closing_receivable = #{closingReceivable}</if>
+            <if test="taxpayerIdentificationNumber != null  and taxpayerIdentificationNumber != ''"> and taxpayer_identification_number = #{taxpayerIdentificationNumber}</if>
+            <if test="taxRate != null  and taxRate != ''"> and tax_rate = #{taxRate}</if>
+            <if test="bankName != null  and bankName != ''"> and bank_name like concat('%', #{bankName}, '%')</if>
+            <if test="accountNumber != null  and accountNumber != ''"> and account_number = #{accountNumber}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="createTime != null ">
+                AND date_format(create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
+            <if test="updateTime != null ">
+                AND date_format(update_time,'%y%m%d') = date_format(#{updateTime},'%y%m%d')
+            </if>
+            <if test="operatorId != null  and operatorId != ''"> and operator_id = #{operatorId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCustomerById" parameterType="Long" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCustomer" parameterType="Customer" useGeneratedKeys="true" keyProperty="id">
+        insert into customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerName != null">customer_name,</if>
+            <if test="contacts != null">contacts,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="fax != null">fax,</if>
+            <if test="openingReceivable != null">opening_receivable,</if>
+            <if test="closingReceivable != null">closing_receivable,</if>
+            <if test="taxpayerIdentificationNumber != null">taxpayer_identification_number,</if>
+            <if test="taxRate != null">tax_rate,</if>
+            <if test="bankName != null">bank_name,</if>
+            <if test="accountNumber != null">account_number,</if>
+            <if test="address != null">address,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="operatorId != null">operator_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerName != null">#{customerName},</if>
+            <if test="contacts != null">#{contacts},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="fax != null">#{fax},</if>
+            <if test="openingReceivable != null">#{openingReceivable},</if>
+            <if test="closingReceivable != null">#{closingReceivable},</if>
+            <if test="taxpayerIdentificationNumber != null">#{taxpayerIdentificationNumber},</if>
+            <if test="taxRate != null">#{taxRate},</if>
+            <if test="bankName != null">#{bankName},</if>
+            <if test="accountNumber != null">#{accountNumber},</if>
+            <if test="address != null">#{address},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCustomer" parameterType="Customer">
+        update customer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="customerName != null">customer_name = #{customerName},</if>
+            <if test="contacts != null">contacts = #{contacts},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="fax != null">fax = #{fax},</if>
+            <if test="openingReceivable != null">opening_receivable = #{openingReceivable},</if>
+            <if test="closingReceivable != null">closing_receivable = #{closingReceivable},</if>
+            <if test="taxpayerIdentificationNumber != null">taxpayer_identification_number = #{taxpayerIdentificationNumber},</if>
+            <if test="taxRate != null">tax_rate = #{taxRate},</if>
+            <if test="bankName != null">bank_name = #{bankName},</if>
+            <if test="accountNumber != null">account_number = #{accountNumber},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCustomerById" parameterType="Long">
+        delete from customer where id = #{id}
+    </delete>
+
+    <delete id="deleteCustomerByIds" parameterType="String">
+        delete from customer where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

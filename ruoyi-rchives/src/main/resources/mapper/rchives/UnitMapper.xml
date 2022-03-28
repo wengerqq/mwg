@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.unit.mapper.UnitMapper">
+    
+    <resultMap type="Unit" id="UnitResult">
+        <result property="id"    column="id"    />
+        <result property="unitName"    column="unit_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="operatorId"    column="operator_id"    />
+    </resultMap>
+
+    <sql id="selectUnitVo">
+        select id, unit_name, create_time, update_time, operator_id from unit
+    </sql>
+
+    <select id="selectUnitList" parameterType="Unit" resultMap="UnitResult">
+        <include refid="selectUnitVo"/>
+        <where>  
+            <if test="unitName != null  and unitName != ''"> and unit_name like concat('%', #{unitName}, '%')</if>
+            <if test="operatorId != null  and operatorId != ''"> and operator_id = #{operatorId}</if>
+        </where>
+    </select>
+    
+    <select id="selectUnitById" parameterType="Long" resultMap="UnitResult">
+        <include refid="selectUnitVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUnit" parameterType="Unit" useGeneratedKeys="true" keyProperty="id">
+        insert into unit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="unitName != null">unit_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="operatorId != null">operator_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="unitName != null">#{unitName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUnit" parameterType="Unit">
+        update unit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="unitName != null">unit_name = #{unitName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUnitById" parameterType="Long">
+        delete from unit where id = #{id}
+    </delete>
+
+    <delete id="deleteUnitByIds" parameterType="String">
+        delete from unit where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

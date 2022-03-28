@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.products.mapper.ProductsMapper">
+    
+    <resultMap type="Products" id="ProductsResult">
+        <result property="id"    column="id"    />
+        <result property="sku"    column="sku"    />
+        <result property="ean"    column="ean"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productNameEn"    column="product_name_en"    />
+        <result property="singleGrossWeight"    column="single_gross_weight"    />
+        <result property="singleNetWeight"    column="single_net_weight"    />
+        <result property="singleLong"    column="single_long"    />
+        <result property="singleWidth"    column="single_width"    />
+        <result property="singleHeight"    column="single_height"    />
+        <result property="grossWeight"    column="gross_weight"    />
+        <result property="netWeight"    column="net_weight"    />
+        <result property="length"    column="length"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="purchasePrice"    column="purchase_price"    />
+        <result property="currencyId"    column="currency_id"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="productStatus"    column="product_status"    />
+        <result property="userId"    column="user_id"    />
+        <result property="unitId"    column="unit_id"    />
+        <result property="varietiesId"    column="varieties_id"    />
+        <result property="brandId"    column="brand_id"    />
+        <result property="numberOfBoxes"    column="number_of_boxes"    />
+        <result property="inkQuantity"    column="ink_quantity"    />
+        <result property="pageNumber"    column="page_number"    />
+        <result property="description"    column="description"    />
+        <result property="factoryCode"    column="factory_code"    />
+        <result property="departmentId"    column="department_id"    />
+        <result property="usable"    column="usable"    />
+        <result property="operatorId"    column="operator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectProductsVo">
+        select id, sku, ean, product_name, product_name_en, single_gross_weight, single_net_weight, single_long, single_width, single_height, gross_weight, net_weight, length, width, height, purchase_price, currency_id, supplier_id, product_status, user_id, unit_id, varieties_id, brand_id, number_of_boxes, ink_quantity, page_number, description, factory_code, department_id, usable, operator_id, create_time, update_time from products
+    </sql>
+
+    <select id="selectProductsList" parameterType="Products" resultMap="ProductsResult">
+        <include refid="selectProductsVo"/>
+        <where>
+            <if test="sku != null  and sku != ''"> and sku = #{sku}</if>
+            <if test="ean != null  and ean != ''"> and ean = #{ean}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="currencyId != null "> and currency_id = #{currencyId}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="productStatus != null "> and product_status = #{productStatus}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="varietiesId != null "> and varieties_id = #{varietiesId}</if>
+            <if test="brandId != null "> and brand_id = #{brandId}</if>
+            <if test="factoryCode != null  and factoryCode != ''"> and factory_code = #{factoryCode}</if>
+            <if test="departmentId != null "> and department_id = #{departmentId}</if>
+            <if test="usable != null "> and usable = #{usable}</if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+            <if test="createTime != null ">
+                AND date_format(create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectProductsById" parameterType="Long" resultMap="ProductsResult">
+        <include refid="selectProductsVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectProductsBySku" parameterType="String" resultMap="ProductsResult">
+        <include refid="selectProductsVo"/>
+        where sku = #{sku}
+    </select>
+        
+    <insert id="insertProducts" parameterType="Products" useGeneratedKeys="true" keyProperty="id">
+        insert into products
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sku != null">sku,</if>
+            <if test="ean != null">ean,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="productNameEn != null">product_name_en,</if>
+            <if test="singleGrossWeight != null">single_gross_weight,</if>
+            <if test="singleNetWeight != null">single_net_weight,</if>
+            <if test="singleLong != null">single_long,</if>
+            <if test="singleWidth != null">single_width,</if>
+            <if test="singleHeight != null">single_height,</if>
+            <if test="grossWeight != null">gross_weight,</if>
+            <if test="netWeight != null">net_weight,</if>
+            <if test="length != null">length,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="purchasePrice != null">purchase_price,</if>
+            <if test="currencyId != null">currency_id,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="productStatus != null">product_status,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="unitId != null">unit_id,</if>
+            <if test="varietiesId != null">varieties_id,</if>
+            <if test="brandId != null">brand_id,</if>
+            <if test="numberOfBoxes != null">number_of_boxes,</if>
+            <if test="inkQuantity != null">ink_quantity,</if>
+            <if test="pageNumber != null">page_number,</if>
+            <if test="description != null">description,</if>
+            <if test="factoryCode != null">factory_code,</if>
+            <if test="departmentId != null">department_id,</if>
+            <if test="usable != null">usable,</if>
+            <if test="operatorId != null">operator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sku != null">#{sku},</if>
+            <if test="ean != null">#{ean},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="productNameEn != null">#{productNameEn},</if>
+            <if test="singleGrossWeight != null">#{singleGrossWeight},</if>
+            <if test="singleNetWeight != null">#{singleNetWeight},</if>
+            <if test="singleLong != null">#{singleLong},</if>
+            <if test="singleWidth != null">#{singleWidth},</if>
+            <if test="singleHeight != null">#{singleHeight},</if>
+            <if test="grossWeight != null">#{grossWeight},</if>
+            <if test="netWeight != null">#{netWeight},</if>
+            <if test="length != null">#{length},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="purchasePrice != null">#{purchasePrice},</if>
+            <if test="currencyId != null">#{currencyId},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="productStatus != null">#{productStatus},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="unitId != null">#{unitId},</if>
+            <if test="varietiesId != null">#{varietiesId},</if>
+            <if test="brandId != null">#{brandId},</if>
+            <if test="numberOfBoxes != null">#{numberOfBoxes},</if>
+            <if test="inkQuantity != null">#{inkQuantity},</if>
+            <if test="pageNumber != null">#{pageNumber},</if>
+            <if test="description != null">#{description},</if>
+            <if test="factoryCode != null">#{factoryCode},</if>
+            <if test="departmentId != null">#{departmentId},</if>
+            <if test="usable != null">#{usable},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProducts" parameterType="Products">
+        update products
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sku != null">sku = #{sku},</if>
+            <if test="ean != null">ean = #{ean},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="productNameEn != null">product_name_en = #{productNameEn},</if>
+            <if test="singleGrossWeight != null">single_gross_weight = #{singleGrossWeight},</if>
+            <if test="singleNetWeight != null">single_net_weight = #{singleNetWeight},</if>
+            <if test="singleLong != null">single_long = #{singleLong},</if>
+            <if test="singleWidth != null">single_width = #{singleWidth},</if>
+            <if test="singleHeight != null">single_height = #{singleHeight},</if>
+            <if test="grossWeight != null">gross_weight = #{grossWeight},</if>
+            <if test="netWeight != null">net_weight = #{netWeight},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="purchasePrice != null">purchase_price = #{purchasePrice},</if>
+            <if test="currencyId != null">currency_id = #{currencyId},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="productStatus != null">product_status = #{productStatus},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="unitId != null">unit_id = #{unitId},</if>
+            <if test="varietiesId != null">varieties_id = #{varietiesId},</if>
+            <if test="brandId != null">brand_id = #{brandId},</if>
+            <if test="numberOfBoxes != null">number_of_boxes = #{numberOfBoxes},</if>
+            <if test="inkQuantity != null">ink_quantity = #{inkQuantity},</if>
+            <if test="pageNumber != null">page_number = #{pageNumber},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="factoryCode != null">factory_code = #{factoryCode},</if>
+            <if test="departmentId != null">department_id = #{departmentId},</if>
+            <if test="usable != null">usable = #{usable},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id} or sku = #{sku}
+    </update>
+
+    <delete id="deleteProductsById" parameterType="Long">
+        delete from products where id = #{id}
+    </delete>
+
+    <delete id="deleteProductsByIds" parameterType="String">
+        delete from products where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectDeptProductsList" parameterType="Products" resultMap="ProductsResult">
+        <include refid="selectProductsVo"/>
+        <where>
+            <if test="sku != null  and sku != ''"> and sku = #{sku}</if>
+            <if test="ean != null  and ean != ''"> and ean = #{ean}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="currencyId != null "> and currency_id = #{currencyId}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="productStatus != null "> and product_status = #{productStatus}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="varietiesId != null "> and varieties_id = #{varietiesId}</if>
+            <if test="brandId != null "> and brand_id = #{brandId}</if>
+            <if test="factoryCode != null  and factoryCode != ''"> and factory_code = #{factoryCode}</if>
+            <if test="departmentId != null and departmentId != 0">
+                and (department_id = #{departmentId} OR department_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set(#{departmentId}, ancestors) ))
+            </if>
+            <if test="usable != null "> and usable = #{usable}</if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+            <if test="createTime != null ">
+                AND date_format(create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+</mapper>

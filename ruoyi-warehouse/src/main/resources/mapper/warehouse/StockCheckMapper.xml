@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.stock_check.mapper.StockCheckMapper">
+    
+    <resultMap type="StockCheck" id="StockCheckResult">
+        <result property="id"    column="id"    />
+        <result property="productsId"    column="products_id"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="procurementInTransit"    column="procurement_in_transit"    />
+        <result property="returnedPartsInTransit"    column="returned_parts_in_transit"    />
+        <result property="readyToGoOnTheShelf"    column="ready_to_go_on_the_shelf"    />
+        <result property="availableQuantity"    column="available_quantity"    />
+        <result property="saleableQuantity"    column="saleable_quantity"    />
+        <result property="toBeDelivered"    column="to_be_delivered"    />
+        <result property="operatorId"    column="operator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <association property="products"    column="id" javaType="Products" resultMap="productsResult" />
+        <association property="warehouse"    column="id" javaType="Warehouse" resultMap="warehouseResult" />
+    </resultMap>
+
+    <resultMap id="productsResult" type="Products">
+        <id     property="id"   column="id"     />
+        <result property="sku" column="sku"   />
+        <result property="productName" column="product_name"   />
+        <result property="productStatus" column="product_status"   />
+        <result property="userId" column="user_id"   />
+        <result property="departmentId" column="department_id"   />
+    </resultMap>
+
+    <resultMap id="warehouseResult" type="Warehouse">
+        <id     property="id"   column="id"     />
+        <result property="warehouseName" column="warehouse_name"   />
+    </resultMap>
+
+    <sql id="selectStockCheckVo">
+        select sc.id, sc.products_id, p.sku, p.product_name, p.product_status, p.user_id,p.department_id, sc.warehouse_id, w.warehouse_name, sc.procurement_in_transit, sc.returned_parts_in_transit, sc.ready_to_go_on_the_shelf, sc.available_quantity, sc.saleable_quantity, sc.to_be_delivered, sc.operator_id, sc.create_time, sc.update_time
+        from stock_check sc
+            left join products p on sc.products_id = p.id
+            left join warehouse w on sc.warehouse_id = w.id
+    </sql>
+
+    <select id="selectStockCheckList" parameterType="StockCheck" resultMap="StockCheckResult">
+        <include refid="selectStockCheckVo"/>
+        <where>  
+            <if test="productsId != null "> and products_id = #{productsId}</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+            <if test="procurementInTransit != null "> and procurement_in_transit = #{procurementInTransit}</if>
+            <if test="returnedPartsInTransit != null "> and returned_parts_in_transit = #{returnedPartsInTransit}</if>
+            <if test="readyToGoOnTheShelf != null "> and ready_to_go_on_the_shelf = #{readyToGoOnTheShelf}</if>
+            <if test="availableQuantity != null "> and available_quantity = #{availableQuantity}</if>
+            <if test="saleableQuantity != null "> and saleable_quantity = #{saleableQuantity}</if>
+            <if test="toBeDelivered != null "> and to_be_delivered = #{toBeDelivered}</if>
+            <if test="operatorId != null "> and sc.operator_id = #{operatorId}</if>
+            <if test="params.deptId != null and params.deptId != ''"> and p.department_id = #{params.deptId}</if>
+            <if test="createTime != null ">
+                AND date_format(sc.create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
+            <if test="updateTime != null ">
+                AND date_format(sc.update_time,'%y%m%d') = date_format(#{updateTime},'%y%m%d')
+            </if>
+            <if test="params.productsSku != null and params.productsSku != ''">
+                AND p.sku = #{params.productsSku}
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectStockCheckById" parameterType="Long" resultMap="StockCheckResult">
+        <include refid="selectStockCheckVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertStockCheck" parameterType="StockCheck" useGeneratedKeys="true" keyProperty="id">
+        insert into stock_check
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productsId != null">products_id,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="procurementInTransit != null">procurement_in_transit,</if>
+            <if test="returnedPartsInTransit != null">returned_parts_in_transit,</if>
+            <if test="readyToGoOnTheShelf != null">ready_to_go_on_the_shelf,</if>
+            <if test="availableQuantity != null">available_quantity,</if>
+            <if test="saleableQuantity != null">saleable_quantity,</if>
+            <if test="toBeDelivered != null">to_be_delivered,</if>
+            <if test="operatorId != null">operator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productsId != null">#{productsId},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="procurementInTransit != null">#{procurementInTransit},</if>
+            <if test="returnedPartsInTransit != null">#{returnedPartsInTransit},</if>
+            <if test="readyToGoOnTheShelf != null">#{readyToGoOnTheShelf},</if>
+            <if test="availableQuantity != null">#{availableQuantity},</if>
+            <if test="saleableQuantity != null">#{saleableQuantity},</if>
+            <if test="toBeDelivered != null">#{toBeDelivered},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStockCheck" parameterType="StockCheck">
+        update stock_check
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productsId != null">products_id = #{productsId},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="procurementInTransit != null">procurement_in_transit = #{procurementInTransit},</if>
+            <if test="returnedPartsInTransit != null">returned_parts_in_transit = #{returnedPartsInTransit},</if>
+            <if test="readyToGoOnTheShelf != null">ready_to_go_on_the_shelf = #{readyToGoOnTheShelf},</if>
+            <if test="availableQuantity != null">available_quantity = #{availableQuantity},</if>
+            <if test="saleableQuantity != null">saleable_quantity = #{saleableQuantity},</if>
+            <if test="toBeDelivered != null">to_be_delivered = #{toBeDelivered},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStockCheckById" parameterType="Long">
+        delete from stock_check where id = #{id}
+    </delete>
+
+    <delete id="deleteStockCheckByIds" parameterType="String">
+        delete from stock_check where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectDeptStockCheckList" parameterType="StockCheck" resultMap="StockCheckResult">
+        <include refid="selectStockCheckVo"/>
+        <where>
+            <if test="productsId != null "> and sc.products_id = #{productsId}</if>
+            <if test="warehouseId != null "> and sc.warehouse_id = #{warehouseId}</if>
+            <if test="procurementInTransit != null "> and sc.procurement_in_transit = #{procurementInTransit}</if>
+            <if test="returnedPartsInTransit != null "> and sc.returned_parts_in_transit = #{returnedPartsInTransit}</if>
+            <if test="readyToGoOnTheShelf != null "> and sc.ready_to_go_on_the_shelf = #{readyToGoOnTheShelf}</if>
+            <if test="availableQuantity != null "> and sc.available_quantity = #{availableQuantity}</if>
+            <if test="saleableQuantity != null "> and sc.saleable_quantity = #{saleableQuantity}</if>
+            <if test="toBeDelivered != null "> and sc.to_be_delivered = #{toBeDelivered}</if>
+            <if test="operatorId != null "> and sc.operator_id = #{operatorId}</if>
+            <if test="params.deptId != null and params.deptId != ''">
+                and (p.department_id = #{params.deptId} OR p.department_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set(#{params.deptId}, ancestors) ))
+            </if>
+            <if test="createTime != null ">
+                AND date_format(sc.create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
+            <if test="updateTime != null ">
+                AND date_format(sc.update_time,'%y%m%d') = date_format(#{updateTime},'%y%m%d')
+            </if>
+            <if test="params.productsSku != null and params.productsSku != ''">
+                AND p.sku = #{params.productsSku}
+            </if>
+        </where>
+    </select>
+</mapper>

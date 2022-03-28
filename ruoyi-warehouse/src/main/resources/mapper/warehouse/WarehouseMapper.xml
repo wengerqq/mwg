@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.warehouse_settings.mapper.WarehouseMapper">
+    
+    <resultMap type="Warehouse" id="WarehouseResult">
+        <result property="id"    column="id"    />
+        <result property="warehouseName"    column="warehouse_name"    />
+        <result property="status"    column="status"    />
+        <result property="type"    column="type"    />
+        <result property="operate"    column="operate"    />
+        <result property="headStroke"    column="head_stroke"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="zipCode"    column="zip_code"    />
+        <result property="houseNumber"    column="house_number"    />
+        <result property="corporateName"    column="corporate_name"    />
+        <result property="addressOne"    column="address_one"    />
+        <result property="addressTwo"    column="address_two"    />
+        <result property="contacts"    column="contacts"    />
+        <result property="phone"    column="phone"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="operatorId"    column="operator_id"    />
+    </resultMap>
+
+    <sql id="selectWarehouseVo">
+        select id, warehouse_name, status, type, operate, head_stroke, country, province, city, zip_code, house_number, corporate_name, address_one, address_two, contacts, phone, dept_id, create_time, update_time, operator_id from warehouse
+    </sql>
+
+    <select id="selectWarehouseList" parameterType="Warehouse" resultMap="WarehouseResult">
+        <include refid="selectWarehouseVo"/>
+        <where>  
+            <if test="warehouseName != null  and warehouseName != ''"> and warehouse_name like concat('%', #{warehouseName}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="operate != null "> and operate = #{operate}</if>
+            <if test="headStroke != null "> and head_stroke = #{headStroke}</if>
+            <if test="country != null "> and country = #{country}</if>
+            <if test="zipCode != null  and zipCode != ''"> and zip_code = #{zipCode}</if>
+            <if test="corporateName != null  and corporateName != ''"> and corporate_name like concat('%', #{corporateName}, '%')</if>
+            <if test="contacts != null  and contacts != ''"> and contacts = #{contacts}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createTime != null ">
+                AND date_format(create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWarehouseById" parameterType="Long" resultMap="WarehouseResult">
+        <include refid="selectWarehouseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWarehouse" parameterType="Warehouse" useGeneratedKeys="true" keyProperty="id">
+        insert into warehouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="warehouseName != null">warehouse_name,</if>
+            <if test="status != null">status,</if>
+            <if test="type != null">type,</if>
+            <if test="operate != null">operate,</if>
+            <if test="headStroke != null">head_stroke,</if>
+            <if test="country != null">country,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="zipCode != null">zip_code,</if>
+            <if test="houseNumber != null">house_number,</if>
+            <if test="corporateName != null">corporate_name,</if>
+            <if test="addressOne != null">address_one,</if>
+            <if test="addressTwo != null">address_two,</if>
+            <if test="contacts != null">contacts,</if>
+            <if test="phone != null">phone,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="operatorId != null">operator_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="warehouseName != null">#{warehouseName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="type != null">#{type},</if>
+            <if test="operate != null">#{operate},</if>
+            <if test="headStroke != null">#{headStroke},</if>
+            <if test="country != null">#{country},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="zipCode != null">#{zipCode},</if>
+            <if test="houseNumber != null">#{houseNumber},</if>
+            <if test="corporateName != null">#{corporateName},</if>
+            <if test="addressOne != null">#{addressOne},</if>
+            <if test="addressTwo != null">#{addressTwo},</if>
+            <if test="contacts != null">#{contacts},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWarehouse" parameterType="Warehouse">
+        update warehouse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warehouseName != null">warehouse_name = #{warehouseName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="operate != null">operate = #{operate},</if>
+            <if test="headStroke != null">head_stroke = #{headStroke},</if>
+            <if test="country != null">country = #{country},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="zipCode != null">zip_code = #{zipCode},</if>
+            <if test="houseNumber != null">house_number = #{houseNumber},</if>
+            <if test="corporateName != null">corporate_name = #{corporateName},</if>
+            <if test="addressOne != null">address_one = #{addressOne},</if>
+            <if test="addressTwo != null">address_two = #{addressTwo},</if>
+            <if test="contacts != null">contacts = #{contacts},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWarehouseById" parameterType="Long">
+        delete from warehouse where id = #{id}
+    </delete>
+
+    <delete id="deleteWarehouseByIds" parameterType="String">
+        delete from warehouse where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectDeptWarehouseList" parameterType="Warehouse" resultMap="WarehouseResult">
+        <include refid="selectWarehouseVo"/>
+        <where>
+            <if test="warehouseName != null  and warehouseName != ''"> and warehouse_name like concat('%', #{warehouseName}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="operate != null "> and operate = #{operate}</if>
+            <if test="headStroke != null "> and head_stroke = #{headStroke}</if>
+            <if test="country != null "> and country = #{country}</if>
+            <if test="zipCode != null  and zipCode != ''"> and zip_code = #{zipCode}</if>
+            <if test="corporateName != null  and corporateName != ''"> and corporate_name like concat('%', #{corporateName}, '%')</if>
+            <if test="contacts != null  and contacts != ''"> and contacts = #{contacts}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="deptId != null and deptId != 0">
+                and (dept_id = #{deptId} OR dept_id IN ( SELECT dept_id FROM sys_dept WHERE find_in_set(#{deptId}, ancestors) ))
+            </if>
+            <if test="createTime != null ">
+                AND date_format(create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+        </where>
+    </select>
+</mapper>

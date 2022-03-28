@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.sales_status.mapper.ProductSalesStatusMapper">
+    
+    <resultMap type="ProductSalesStatus" id="ProductSalesStatusResult">
+        <result property="id"    column="id"    />
+        <result property="statusName"    column="status_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="operatorId"    column="operator_id"    />
+    </resultMap>
+
+    <sql id="selectProductSalesStatusVo">
+        select id, status_name, create_time, update_time, operator_id from product_sales_status
+    </sql>
+
+    <select id="selectProductSalesStatusList" parameterType="ProductSalesStatus" resultMap="ProductSalesStatusResult">
+        <include refid="selectProductSalesStatusVo"/>
+        <where>  
+            <if test="statusName != null  and statusName != ''"> and status_name like concat('%', #{statusName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectProductSalesStatusById" parameterType="Long" resultMap="ProductSalesStatusResult">
+        <include refid="selectProductSalesStatusVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertProductSalesStatus" parameterType="ProductSalesStatus" useGeneratedKeys="true" keyProperty="id">
+        insert into product_sales_status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="statusName != null">status_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="operatorId != null">operator_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="statusName != null">#{statusName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductSalesStatus" parameterType="ProductSalesStatus">
+        update product_sales_status
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="statusName != null">status_name = #{statusName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductSalesStatusById" parameterType="Long">
+        delete from product_sales_status where id = #{id}
+    </delete>
+
+    <delete id="deleteProductSalesStatusByIds" parameterType="String">
+        delete from product_sales_status where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.purchase.mapper.PurchaseMapper">
+    
+    <resultMap type="Purchase" id="PurchaseResult">
+        <result property="purchaseId"    column="purchase_id"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="supplierId"    column="supplier_id"    />
+        <result property="buyerId"    column="buyer_id"    />
+        <result property="trackingNumber"    column="tracking_number"    />
+        <result property="settlementMethod"    column="settlement_method"    />
+        <result property="currency"    column="currency"    />
+        <result property="paymentMethod"    column="payment_method"    />
+        <result property="collectionMethod"    column="collection_method"    />
+        <result property="paymentCycleType"    column="payment_cycle_type"    />
+        <result property="supplierShippingType"    column="supplier_shipping_type"    />
+        <result property="freight"    column="freight"    />
+        <result property="estimatedArrivalTime"    column="estimated_arrival_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="operatorId"    column="operator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPurchaseVo">
+        select purchase_id, warehouse_id, supplier_id, buyer_id, tracking_number, settlement_method, currency, payment_method, collection_method, payment_cycle_type, supplier_shipping_type, freight, estimated_arrival_time, dept_id, remarks, operator_id, create_time, update_time from purchase
+    </sql>
+
+    <select id="selectPurchaseList" parameterType="Purchase" resultMap="PurchaseResult">
+        <include refid="selectPurchaseVo"/>
+        <where>  
+            <if test="purchaseId != null  and purchaseId != ''"> and purchase_id = #{purchaseId}</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="buyerId != null "> and buyer_id = #{buyerId}</if>
+            <if test="trackingNumber != null "> and tracking_number = #{trackingNumber}</if>
+            <if test="estimatedArrivalTime != null "> and estimated_arrival_time = #{estimatedArrivalTime}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPurchaseByPurchaseId" parameterType="String" resultMap="PurchaseResult">
+        <include refid="selectPurchaseVo"/>
+        where purchase_id = #{purchaseId}
+    </select>
+        
+    <insert id="insertPurchase" parameterType="Purchase">
+        insert into purchase
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="purchaseId != null">purchase_id,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="supplierId != null">supplier_id,</if>
+            <if test="buyerId != null">buyer_id,</if>
+            <if test="trackingNumber != null">tracking_number,</if>
+            <if test="settlementMethod != null">settlement_method,</if>
+            <if test="currency != null">currency,</if>
+            <if test="paymentMethod != null">payment_method,</if>
+            <if test="collectionMethod != null">collection_method,</if>
+            <if test="paymentCycleType != null">payment_cycle_type,</if>
+            <if test="supplierShippingType != null">supplier_shipping_type,</if>
+            <if test="freight != null">freight,</if>
+            <if test="estimatedArrivalTime != null">estimated_arrival_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="operatorId != null">operator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="purchaseId != null">#{purchaseId},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="supplierId != null">#{supplierId},</if>
+            <if test="buyerId != null">#{buyerId},</if>
+            <if test="trackingNumber != null">#{trackingNumber},</if>
+            <if test="settlementMethod != null">#{settlementMethod},</if>
+            <if test="currency != null">#{currency},</if>
+            <if test="paymentMethod != null">#{paymentMethod},</if>
+            <if test="collectionMethod != null">#{collectionMethod},</if>
+            <if test="paymentCycleType != null">#{paymentCycleType},</if>
+            <if test="supplierShippingType != null">#{supplierShippingType},</if>
+            <if test="freight != null">#{freight},</if>
+            <if test="estimatedArrivalTime != null">#{estimatedArrivalTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePurchase" parameterType="Purchase">
+        update purchase
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId},</if>
+            <if test="buyerId != null">buyer_id = #{buyerId},</if>
+            <if test="trackingNumber != null">tracking_number = #{trackingNumber},</if>
+            <if test="settlementMethod != null">settlement_method = #{settlementMethod},</if>
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="paymentMethod != null">payment_method = #{paymentMethod},</if>
+            <if test="collectionMethod != null">collection_method = #{collectionMethod},</if>
+            <if test="paymentCycleType != null">payment_cycle_type = #{paymentCycleType},</if>
+            <if test="supplierShippingType != null">supplier_shipping_type = #{supplierShippingType},</if>
+            <if test="freight != null">freight = #{freight},</if>
+            <if test="estimatedArrivalTime != null">estimated_arrival_time = #{estimatedArrivalTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where purchase_id = #{purchaseId}
+    </update>
+
+    <delete id="deletePurchaseByPurchaseId" parameterType="String">
+        delete from purchase where purchase_id = #{purchaseId}
+    </delete>
+
+    <delete id="deletePurchaseByPurchaseIds" parameterType="String">
+        delete from purchase where purchase_id in 
+        <foreach item="purchaseId" collection="array" open="(" separator="," close=")">
+            #{purchaseId}
+        </foreach>
+    </delete>
+</mapper>
