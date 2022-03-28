@@ -10,10 +10,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="仓库ID" prop="warehouseId">
+      <el-form-item label="仓库" prop="warehouseId">
         <el-input
           v-model="queryParams.warehouseId"
-          placeholder="请输入仓库ID"
+          placeholder="请输入仓库"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
