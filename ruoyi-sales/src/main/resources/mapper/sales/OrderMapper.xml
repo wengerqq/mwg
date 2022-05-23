@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.order.mapper.OrderMapper">
+    
+    <resultMap type="Order" id="OrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="status"    column="status"    />
+        <result property="site"    column="site"    />
+        <result property="buyerCode"    column="buyer_code"    />
+        <result property="buyerName"    column="buyer_name"    />
+        <result property="buyerEmail"    column="buyer_email"    />
+        <result property="total"    column="total"    />
+        <result property="freight"    column="freight"    />
+        <result property="totalFreight"    column="total_freight"    />
+        <result property="referenceNumber"    column="reference_number"    />
+        <result property="warehouseNumber"    column="warehouse_number"    />
+        <result property="deliveryWarehouseId"    column="delivery_warehouse_id"    />
+        <result property="paymentMethodId"    column="payment_method_id"    />
+        <result property="warehouseDeliveryId"    column="warehouse_delivery_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="recipientTaxNumber"    column="recipient_tax_number"    />
+        <result property="customerServiceRemarks"    column="customer_service_remarks"    />
+        <result property="orderRemarks"    column="order_remarks"    />
+        <result property="countryCodeOfTaxNumber"    column="country_code_of_tax_number"    />
+        <result property="addressee"    column="addressee"    />
+        <result property="phone"    column="phone"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="recipientCountry"    column="recipient_country"    />
+        <result property="recipientProvinceState"    column="recipient_province_state"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+        <result property="detailedAddress"    column="detailed_address"    />
+        <result property="houseNumber"    column="house_number"    />
+        <result property="zipCode"    column="zip_code"    />
+        <result property="cpfTaxOrCustomsClearanceSerialNumber"    column="cpf_tax_or_customs_clearance_serial_number"    />
+        <result property="billingAddress"    column="billing_address"    />
+        <result property="signType"    column="sign_type"    />
+        <result property="finalMark"    column="final_mark"    />
+        <result property="auditTime"    column="audit_time"    />
+        <result property="deliveryTime"    column="delivery_time"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select id, order_id, status, site, buyer_code, buyer_name, buyer_email, total, freight, total_freight, reference_number, warehouse_number, delivery_warehouse_id, payment_method_id, warehouse_delivery_id, weight, recipient_tax_number, customer_service_remarks, order_remarks, country_code_of_tax_number, addressee, phone, company_name, recipient_country, recipient_province_state, city, district, detailed_address, house_number, zip_code, cpf_tax_or_customs_clearance_serial_number, billing_address, sign_type, final_mark, audit_time, delivery_time, create_time from `order`
+    </sql>
+
+    <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>  
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="site != null  and site != ''"> and site = #{site}</if>
+            <if test="buyerCode != null  and buyerCode != ''"> and buyer_code = #{buyerCode}</if>
+            <if test="buyerName != null  and buyerName != ''"> and buyer_name like concat('%', #{buyerName}, '%')</if>
+            <if test="buyerEmail != null  and buyerEmail != ''"> and buyer_email = #{buyerEmail}</if>
+            <if test="total != null  and total != ''"> and total = #{total}</if>
+            <if test="freight != null  and freight != ''"> and freight = #{freight}</if>
+            <if test="totalFreight != null  and totalFreight != ''"> and total_freight = #{totalFreight}</if>
+            <if test="referenceNumber != null  and referenceNumber != ''"> and reference_number = #{referenceNumber}</if>
+            <if test="warehouseNumber != null  and warehouseNumber != ''"> and warehouse_number = #{warehouseNumber}</if>
+            <if test="deliveryWarehouseId != null "> and delivery_warehouse_id = #{deliveryWarehouseId}</if>
+            <if test="paymentMethodId != null "> and payment_method_id = #{paymentMethodId}</if>
+            <if test="warehouseDeliveryId != null "> and warehouse_delivery_id = #{warehouseDeliveryId}</if>
+            <if test="weight != null  and weight != ''"> and weight = #{weight}</if>
+            <if test="recipientTaxNumber != null  and recipientTaxNumber != ''"> and recipient_tax_number = #{recipientTaxNumber}</if>
+            <if test="customerServiceRemarks != null  and customerServiceRemarks != ''"> and customer_service_remarks = #{customerServiceRemarks}</if>
+            <if test="orderRemarks != null  and orderRemarks != ''"> and order_remarks = #{orderRemarks}</if>
+            <if test="countryCodeOfTaxNumber != null  and countryCodeOfTaxNumber != ''"> and country_code_of_tax_number = #{countryCodeOfTaxNumber}</if>
+            <if test="addressee != null  and addressee != ''"> and addressee = #{addressee}</if>
+            <if test="phone != null "> and phone = #{phone}</if>
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="recipientCountry != null  and recipientCountry != ''"> and recipient_country = #{recipientCountry}</if>
+            <if test="recipientProvinceState != null  and recipientProvinceState != ''"> and recipient_province_state = #{recipientProvinceState}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="district != null  and district != ''"> and district = #{district}</if>
+            <if test="detailedAddress != null  and detailedAddress != ''"> and detailed_address = #{detailedAddress}</if>
+            <if test="houseNumber != null  and houseNumber != ''"> and house_number = #{houseNumber}</if>
+            <if test="zipCode != null  and zipCode != ''"> and zip_code = #{zipCode}</if>
+            <if test="cpfTaxOrCustomsClearanceSerialNumber != null  and cpfTaxOrCustomsClearanceSerialNumber != ''"> and cpf_tax_or_customs_clearance_serial_number = #{cpfTaxOrCustomsClearanceSerialNumber}</if>
+            <if test="billingAddress != null  and billingAddress != ''"> and billing_address = #{billingAddress}</if>
+            <if test="signType != null "> and sign_type = #{signType}</if>
+            <if test="finalMark != null "> and final_mark = #{finalMark}</if>
+            <if test="auditTime != null "> and audit_time = #{auditTime}</if>
+            <if test="deliveryTime != null "> and delivery_time = #{deliveryTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderById" parameterType="Long" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrder" parameterType="Order">
+        insert into `order`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderId != null">order_id,</if>
+            <if test="status != null">status,</if>
+            <if test="site != null">site,</if>
+            <if test="buyerCode != null">buyer_code,</if>
+            <if test="buyerName != null">buyer_name,</if>
+            <if test="buyerEmail != null">buyer_email,</if>
+            <if test="total != null">total,</if>
+            <if test="freight != null">freight,</if>
+            <if test="totalFreight != null">total_freight,</if>
+            <if test="referenceNumber != null">reference_number,</if>
+            <if test="warehouseNumber != null">warehouse_number,</if>
+            <if test="deliveryWarehouseId != null">delivery_warehouse_id,</if>
+            <if test="paymentMethodId != null">payment_method_id,</if>
+            <if test="warehouseDeliveryId != null">warehouse_delivery_id,</if>
+            <if test="weight != null">weight,</if>
+            <if test="recipientTaxNumber != null">recipient_tax_number,</if>
+            <if test="customerServiceRemarks != null">customer_service_remarks,</if>
+            <if test="orderRemarks != null">order_remarks,</if>
+            <if test="countryCodeOfTaxNumber != null">country_code_of_tax_number,</if>
+            <if test="addressee != null">addressee,</if>
+            <if test="phone != null">phone,</if>
+            <if test="companyName != null">company_name,</if>
+            <if test="recipientCountry != null">recipient_country,</if>
+            <if test="recipientProvinceState != null">recipient_province_state,</if>
+            <if test="city != null">city,</if>
+            <if test="district != null">district,</if>
+            <if test="detailedAddress != null">detailed_address,</if>
+            <if test="houseNumber != null">house_number,</if>
+            <if test="zipCode != null">zip_code,</if>
+            <if test="cpfTaxOrCustomsClearanceSerialNumber != null">cpf_tax_or_customs_clearance_serial_number,</if>
+            <if test="billingAddress != null">billing_address,</if>
+            <if test="signType != null">sign_type,</if>
+            <if test="finalMark != null">final_mark,</if>
+            <if test="auditTime != null">audit_time,</if>
+            <if test="deliveryTime != null">delivery_time,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderId != null">#{orderId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="site != null">#{site},</if>
+            <if test="buyerCode != null">#{buyerCode},</if>
+            <if test="buyerName != null">#{buyerName},</if>
+            <if test="buyerEmail != null">#{buyerEmail},</if>
+            <if test="total != null">#{total},</if>
+            <if test="freight != null">#{freight},</if>
+            <if test="totalFreight != null">#{totalFreight},</if>
+            <if test="referenceNumber != null">#{referenceNumber},</if>
+            <if test="warehouseNumber != null">#{warehouseNumber},</if>
+            <if test="deliveryWarehouseId != null">#{deliveryWarehouseId},</if>
+            <if test="paymentMethodId != null">#{paymentMethodId},</if>
+            <if test="warehouseDeliveryId != null">#{warehouseDeliveryId},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="recipientTaxNumber != null">#{recipientTaxNumber},</if>
+            <if test="customerServiceRemarks != null">#{customerServiceRemarks},</if>
+            <if test="orderRemarks != null">#{orderRemarks},</if>
+            <if test="countryCodeOfTaxNumber != null">#{countryCodeOfTaxNumber},</if>
+            <if test="addressee != null">#{addressee},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="recipientCountry != null">#{recipientCountry},</if>
+            <if test="recipientProvinceState != null">#{recipientProvinceState},</if>
+            <if test="city != null">#{city},</if>
+            <if test="district != null">#{district},</if>
+            <if test="detailedAddress != null">#{detailedAddress},</if>
+            <if test="houseNumber != null">#{houseNumber},</if>
+            <if test="zipCode != null">#{zipCode},</if>
+            <if test="cpfTaxOrCustomsClearanceSerialNumber != null">#{cpfTaxOrCustomsClearanceSerialNumber},</if>
+            <if test="billingAddress != null">#{billingAddress},</if>
+            <if test="signType != null">#{signType},</if>
+            <if test="finalMark != null">#{finalMark},</if>
+            <if test="auditTime != null">#{auditTime},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="Order">
+        update `order`
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="site != null">site = #{site},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="buyerCode != null">buyer_code = #{buyerCode},</if>
+            <if test="buyerName != null">buyer_name = #{buyerName},</if>
+            <if test="buyerEmail != null">buyer_email = #{buyerEmail},</if>
+            <if test="total != null">total = #{total},</if>
+            <if test="freight != null">freight = #{freight},</if>
+            <if test="totalFreight != null">total_freight = #{totalFreight},</if>
+            <if test="referenceNumber != null">reference_number = #{referenceNumber},</if>
+            <if test="warehouseNumber != null">warehouse_number = #{warehouseNumber},</if>
+            <if test="deliveryWarehouseId != null">delivery_warehouse_id = #{deliveryWarehouseId},</if>
+            <if test="paymentMethodId != null">payment_method_id = #{paymentMethodId},</if>
+            <if test="warehouseDeliveryId != null">warehouse_delivery_id = #{warehouseDeliveryId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="recipientTaxNumber != null">recipient_tax_number = #{recipientTaxNumber},</if>
+            <if test="customerServiceRemarks != null">customer_service_remarks = #{customerServiceRemarks},</if>
+            <if test="orderRemarks != null">order_remarks = #{orderRemarks},</if>
+            <if test="countryCodeOfTaxNumber != null">country_code_of_tax_number = #{countryCodeOfTaxNumber},</if>
+            <if test="addressee != null">addressee = #{addressee},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="companyName != null">company_name = #{companyName},</if>
+            <if test="recipientCountry != null">recipient_country = #{recipientCountry},</if>
+            <if test="recipientProvinceState != null">recipient_province_state = #{recipientProvinceState},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="district != null">district = #{district},</if>
+            <if test="detailedAddress != null">detailed_address = #{detailedAddress},</if>
+            <if test="houseNumber != null">house_number = #{houseNumber},</if>
+            <if test="zipCode != null">zip_code = #{zipCode},</if>
+            <if test="cpfTaxOrCustomsClearanceSerialNumber != null">cpf_tax_or_customs_clearance_serial_number = #{cpfTaxOrCustomsClearanceSerialNumber},</if>
+            <if test="billingAddress != null">billing_address = #{billingAddress},</if>
+            <if test="signType != null">sign_type = #{signType},</if>
+            <if test="finalMark != null">final_mark = #{finalMark},</if>
+            <if test="auditTime != null">audit_time = #{auditTime},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="Long">
+        delete from `order` where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from `order` where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateOrderValue" parameterType="Order">
+        update `order`
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="status != null">status = #{status},</if>
+            <if test="deliveryWarehouseId != null">delivery_warehouse_id = #{deliveryWarehouseId},</if>
+            <if test="warehouseDeliveryId != null">warehouse_delivery_id = #{warehouseDeliveryId},</if>
+            <if test="customerServiceRemarks != null">customer_service_remarks = #{customerServiceRemarks},</if>
+            <if test="signType != null">sign_type = #{signType},</if>
+        </trim>
+        where id in
+        <foreach item="params.ids" collection="params.ids" open="(" separator="," close=")">
+            #{params.ids}
+        </foreach>
+    </update>
+
+    <select id="selectOrderByIds" parameterType="order" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id in
+        <foreach item="params.ids" collection="params.ids" open="(" separator="," close=")">
+            #{params.ids}
+        </foreach>
+    </select>
+</mapper>

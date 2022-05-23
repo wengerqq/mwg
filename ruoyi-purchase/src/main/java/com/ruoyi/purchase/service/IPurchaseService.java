@@ -14,10 +14,10 @@ public interface IPurchaseService
     /**
      * 查询采购确认
      * 
-     * @param purchaseId 采购确认主键
+     * @param id 采购确认主键
      * @return 采购确认
      */
-    public Purchase selectPurchaseByPurchaseId(String purchaseId);
+    public Purchase selectPurchaseById(Long id);
 
     /**
      * 查询采购确认列表

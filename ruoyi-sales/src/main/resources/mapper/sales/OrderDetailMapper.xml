@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.detail.mapper.OrderDetailMapper">
+    
+    <resultMap type="OrderDetail" id="OrderDetailResult">
+        <result property="id"    column="id"    />
+        <result property="orderKeyId"    column="order_key_id"    />
+        <result property="productSku"    column="product_sku"    />
+        <result property="productName"    column="product_name"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="price"    column="price"    />
+        <result property="stock"    column="stock"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+
+    <sql id="selectOrderDetailVo">
+        select id, order_key_id, product_sku, product_name, quantity, price, stock, remarks from order_detail
+    </sql>
+
+    <select id="selectOrderDetailList" parameterType="OrderDetail" resultMap="OrderDetailResult">
+        <include refid="selectOrderDetailVo"/>
+        <where>  
+            <if test="orderKeyId != null "> and order_key_id = #{orderKeyId}</if>
+            <if test="productSku != null  and productSku != ''"> and product_sku = #{productSku}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="price != null  and price != ''"> and price = #{price}</if>
+            <if test="stock != null "> and stock = #{stock}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderDetailById" parameterType="Long" resultMap="OrderDetailResult">
+        <include refid="selectOrderDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrderDetail" parameterType="OrderDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderKeyId != null">order_key_id,</if>
+            <if test="productSku != null">product_sku,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="price != null">price,</if>
+            <if test="stock != null">stock,</if>
+            <if test="remarks != null">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderKeyId != null">#{orderKeyId},</if>
+            <if test="productSku != null">#{productSku},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="price != null">#{price},</if>
+            <if test="stock != null">#{stock},</if>
+            <if test="remarks != null">#{remarks},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderDetail" parameterType="OrderDetail">
+        update order_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderKeyId != null">order_key_id = #{orderKeyId},</if>
+            <if test="productSku != null">product_sku = #{productSku},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderDetailById" parameterType="Long">
+        delete from order_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderDetailByIds" parameterType="String">
+        delete from order_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

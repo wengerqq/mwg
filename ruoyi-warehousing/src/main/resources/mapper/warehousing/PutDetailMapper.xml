@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.put.mapper.PutDetailMapper">
+    
+    <resultMap type="PutDetail" id="PutDetailResult">
+        <result property="id"    column="id"    />
+        <result property="purchaseKeyId"    column="purchase_key_id"    />
+        <result property="pdId"    column="pd_id"    />
+        <result property="productSku"    column="product_sku"    />
+        <result property="productName"    column="product_name"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="status"    column="status"    />
+        <result property="operatorId"    column="operator_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPutDetailVo">
+        select id, purchase_key_id, pd_id, product_sku, product_name, quantity, status, operator_id, create_time, update_time from put_detail
+    </sql>
+
+    <select id="selectPutDetailList" parameterType="PutDetail" resultMap="PutDetailResult">
+        <include refid="selectPutDetailVo"/>
+        <where>
+            <if test="params.purchaseId != null"> and purchase_key_id in ( SELECT id FROM purchase WHERE find_in_set(#{params.purchaseId}, purchase_id) )</if>
+            <if test="params.putId != null"> and purchase_key_id in ( SELECT id FROM purchase WHERE find_in_set(#{params.putId}, put_id) )</if>
+            <if test="params.receiptId != null"> and purchase_key_id in ( SELECT id FROM purchase WHERE find_in_set(#{params.receiptId}, receipt_id) )</if>
+            <if test="params.warehouseId"> and purchase_key_id in ( SELECT id FROM purchase WHERE find_in_set(#{params.warehouseId}, warehouse_id) )</if>
+            <if test="params.deptId"> and purchase_key_id in ( SELECT id FROM purchase WHERE find_in_set(#{params.deptId}, dept_id) )</if>
+            <if test="pdId != null "> and pd_id = #{pdId}</if>
+            <if test="productSku != null "> and product_sku = #{productSku}</if>
+            <if test="productName != null "> and product_name = #{productName}</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPutDetailById" parameterType="Long" resultMap="PutDetailResult">
+        <include refid="selectPutDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPutDetail" parameterType="PutDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into put_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="purchaseKeyId != null">purchase_key_id,</if>
+            <if test="pdId != null">pd_id,</if>
+            <if test="productSku != null">product_sku,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="status != null">status,</if>
+            <if test="operatorId != null">operator_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="purchaseKeyId != null">#{purchaseKeyId},</if>
+            <if test="pdId != null">#{pdId},</if>
+            <if test="productSku != null">#{productSku},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="status != null">#{status},</if>
+            <if test="operatorId != null">#{operatorId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePutDetail" parameterType="PutDetail">
+        update put_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="purchaseKeyId != null">purchase_key_id = #{purchaseKeyId},</if>
+            <if test="pdId != null">pd_id = #{pdId},</if>
+            <if test="productSku != null">product_sku = #{productSku},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="operatorId != null">operator_id = #{operatorId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePutDetailById" parameterType="Long">
+        delete from put_detail where id = #{id}
+    </delete>
+
+    <delete id="deletePutDetailByIds" parameterType="String">
+        delete from put_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectPutDetailByPurchaseKeyId" parameterType="Long" resultMap="PutDetailResult">
+        <include refid="selectPutDetailVo"/>
+        where purchase_key_id = #{purchaseKeyId} and status = 0
+    </select>
+</mapper>

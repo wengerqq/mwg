@@ -14,7 +14,7 @@ export function getPurchase(purchaseId) {
   return request({
     url: '/purchase/purchase/getInfo',
     method: 'post',
-    data:Number(purchaseId)
+    data:purchaseId
   })
 }
 

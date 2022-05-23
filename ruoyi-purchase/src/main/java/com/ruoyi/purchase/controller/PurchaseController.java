@@ -1,7 +1,15 @@
 package com.ruoyi.purchase.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.utils.OddNumUtil;
+import com.ruoyi.common.utils.PurchaseUploadData;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.purchase_detail.domain.PurchaseDetail;
+import com.ruoyi.purchase_detail.service.IPurchaseDetailService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +28,7 @@ import com.ruoyi.purchase.domain.Purchase;
 import com.ruoyi.purchase.service.IPurchaseService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 采购确认Controller
@@ -33,6 +42,9 @@ public class PurchaseController extends BaseController
 {
     @Autowired
     private IPurchaseService purchaseService;
+
+    @Autowired
+    private IPurchaseDetailService purchaseDetailService;
 
     /**
      * 查询采购确认列表
@@ -64,9 +76,9 @@ public class PurchaseController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('purchase:purchase:query')")
     @PostMapping("/getInfo")
-    public AjaxResult getInfo(@RequestBody String purchaseId)
+    public AjaxResult getInfo(@RequestBody Long id)
     {
-        return AjaxResult.success(purchaseService.selectPurchaseByPurchaseId(purchaseId));
+        return AjaxResult.success(purchaseService.selectPurchaseById(id));
     }
 
     /**
@@ -77,7 +89,8 @@ public class PurchaseController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody Purchase purchase)
     {
-        return toAjax(purchaseService.insertPurchase(purchase));
+        purchase.setPurchaseId(OddNumUtil.getOddNum("CG", SecurityUtils.getUserId()));
+        return toAjax(purchaseService.insertPurchase(purchase),"采购单【"+purchase.getPurchaseId()+"】录入成功");
     }
 
     /**
@@ -100,5 +113,23 @@ public class PurchaseController extends BaseController
     public AjaxResult remove(@RequestBody String[] purchaseIds)
     {
         return toAjax(purchaseService.deletePurchaseByPurchaseIds(purchaseIds));
+    }
+
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response)
+    {
+        ExcelUtil<PurchaseDetail> util = new ExcelUtil<PurchaseDetail>(PurchaseDetail.class);
+        util.importTemplateExcel(response, "采购产品数据");
+    }
+
+    @Log(title = "采购导入", businessType = BusinessType.IMPORT)
+    @PreAuthorize("@ss.hasPermi('purchase:purchase:import')")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, PurchaseUploadData purchaseUploadData, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<PurchaseDetail> util = new ExcelUtil<PurchaseDetail>(PurchaseDetail.class);
+        List<PurchaseDetail> purchaseDetailList = util.importExcel(file.getInputStream());
+        String message = purchaseDetailService.importPurchaseDetail(purchaseDetailList, updateSupport,purchaseUploadData);
+        return AjaxResult.success(message);
     }
 }

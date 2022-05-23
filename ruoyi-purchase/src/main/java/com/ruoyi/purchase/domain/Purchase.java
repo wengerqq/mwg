@@ -17,13 +17,28 @@ public class Purchase extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
+    /** 采购id */
+    private Long id;
+
     /** 采购单号 */
     @Excel(name = "采购单号")
     private String purchaseId;
 
+    /** 入库单号 */
+    @Excel(name = "入库单号")
+    private String receiptId;
+
+    /** 上架单号 */
+    @Excel(name = "上架单号")
+    private String putId;
+
     /** 仓库ID */
     @Excel(name = "仓库ID")
     private Long warehouseId;
+
+    /** 是否中转 */
+    @Excel(name = "是否中转")
+    private Long transferOrNot;
 
     /** 供应商ID */
     @Excel(name = "供应商ID")
@@ -33,9 +48,13 @@ public class Purchase extends BaseEntity
     @Excel(name = "采购员ID")
     private Long buyerId;
 
+    /** 采购状态 */
+    @Excel(name = "采购状态")
+    private Long status;
+
     /** 跟踪单号 */
     @Excel(name = "跟踪单号")
-    private Long trackingNumber;
+    private String trackingNumber;
 
     /** 结算方式 */
     private String settlementMethod;
@@ -76,6 +95,18 @@ public class Purchase extends BaseEntity
     @Excel(name = "操作人")
     private Long operatorId;
 
+    /** 终审标志 */
+    private Long finalMark;
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public Long getId()
+    {
+        return id;
+    }
     public void setPurchaseId(String purchaseId) 
     {
         this.purchaseId = purchaseId;
@@ -85,6 +116,24 @@ public class Purchase extends BaseEntity
     {
         return purchaseId;
     }
+    public void setReceiptId(String receiptId)
+    {
+        this.receiptId = receiptId;
+    }
+
+    public String getReceiptId()
+    {
+        return receiptId;
+    }
+    public void setPutId(String putId)
+    {
+        this.putId = putId;
+    }
+
+    public String getPutId()
+    {
+        return putId;
+    }
     public void setWarehouseId(Long warehouseId) 
     {
         this.warehouseId = warehouseId;
@@ -93,6 +142,15 @@ public class Purchase extends BaseEntity
     public Long getWarehouseId() 
     {
         return warehouseId;
+    }
+    public void setTransferOrNot(Long transferOrNot)
+    {
+        this.transferOrNot = transferOrNot;
+    }
+
+    public Long getTransferOrNot()
+    {
+        return transferOrNot;
     }
     public void setSupplierId(Long supplierId) 
     {
@@ -112,12 +170,21 @@ public class Purchase extends BaseEntity
     {
         return buyerId;
     }
-    public void setTrackingNumber(Long trackingNumber) 
+    public void setStatus(Long status)
+    {
+        this.status = status;
+    }
+
+    public Long getStatus()
+    {
+        return status;
+    }
+    public void setTrackingNumber(String trackingNumber)
     {
         this.trackingNumber = trackingNumber;
     }
 
-    public Long getTrackingNumber() 
+    public String getTrackingNumber()
     {
         return trackingNumber;
     }
@@ -211,21 +278,34 @@ public class Purchase extends BaseEntity
     {
         return remarks;
     }
-    public void setOperatorId(Long operatorId) 
+    public void setOperatorId(Long operatorId)
     {
         this.operatorId = operatorId;
     }
 
-    public Long getOperatorId() 
+    public Long getOperatorId()
     {
         return operatorId;
+    }
+    public void setFinalMark(Long finalMark)
+    {
+        this.finalMark = finalMark;
+    }
+
+    public Long getFinalMark()
+    {
+        return finalMark;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", getId())
             .append("purchaseId", getPurchaseId())
+            .append("receiptId", getReceiptId())
+            .append("putId",getPutId())
             .append("warehouseId", getWarehouseId())
+            .append("transferOrNot", getTransferOrNot())
             .append("supplierId", getSupplierId())
             .append("buyerId", getBuyerId())
             .append("trackingNumber", getTrackingNumber())
@@ -240,6 +320,7 @@ public class Purchase extends BaseEntity
             .append("deptId", getDeptId())
             .append("remarks", getRemarks())
             .append("operatorId", getOperatorId())
+            .append("finalMark", getFinalMark())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .toString();

@@ -81,7 +81,7 @@ public class Products extends BaseEntity
 
     /** 采购价 */
     @Excel(name = "采购价*")
-    private BigDecimal purchasePrice;
+    private String purchasePrice;
 
     /** 采购币种ID */
     @Excel(name = "采购币种ID*")
@@ -278,12 +278,12 @@ public class Products extends BaseEntity
     {
         return height;
     }
-    public void setPurchasePrice(BigDecimal purchasePrice) 
+    public void setPurchasePrice(String purchasePrice)
     {
         this.purchasePrice = purchasePrice;
     }
 
-    public BigDecimal getPurchasePrice() 
+    public String getPurchasePrice()
     {
         return purchasePrice;
     }

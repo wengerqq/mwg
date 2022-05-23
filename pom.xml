@@ -218,6 +218,18 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-warehousing</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-sales</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -232,6 +244,8 @@
         <module>ruoyi-rchives</module>
         <module>ruoyi-warehouse</module>
         <module>ruoyi-purchase</module>
+        <module>ruoyi-warehousing</module>
+        <module>ruoyi-sales</module>
     </modules>
     <packaging>pom</packaging>
 

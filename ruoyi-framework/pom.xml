@@ -74,6 +74,16 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-purchase</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-warehousing</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-sales</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

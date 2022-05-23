@@ -5,10 +5,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.purchase.mapper.PurchaseMapper">
     
     <resultMap type="Purchase" id="PurchaseResult">
+        <result property="id"    column="id"    />
         <result property="purchaseId"    column="purchase_id"    />
+        <result property="receiptId"    column="receipt_id"    />
+        <result property="putId"    column="put_id"    />
         <result property="warehouseId"    column="warehouse_id"    />
+        <result property="transferOrNot"    column="transfer_or_not"    />
         <result property="supplierId"    column="supplier_id"    />
         <result property="buyerId"    column="buyer_id"    />
+        <result property="status"    column="status"    />
         <result property="trackingNumber"    column="tracking_number"    />
         <result property="settlementMethod"    column="settlement_method"    />
         <result property="currency"    column="currency"    />
@@ -26,22 +31,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPurchaseVo">
-        select purchase_id, warehouse_id, supplier_id, buyer_id, tracking_number, settlement_method, currency, payment_method, collection_method, payment_cycle_type, supplier_shipping_type, freight, estimated_arrival_time, dept_id, remarks, operator_id, create_time, update_time from purchase
+        select id, purchase_id, receipt_id, put_id, warehouse_id, transfer_or_not, supplier_id, buyer_id, status, tracking_number, settlement_method, currency, payment_method, collection_method, payment_cycle_type, supplier_shipping_type, freight, estimated_arrival_time, dept_id, remarks, operator_id, create_time, update_time from purchase
     </sql>
 
     <select id="selectPurchaseList" parameterType="Purchase" resultMap="PurchaseResult">
         <include refid="selectPurchaseVo"/>
         <where>  
             <if test="purchaseId != null  and purchaseId != ''"> and purchase_id = #{purchaseId}</if>
+            <if test="receiptId != null  and receiptId != ''"> and receipt_id = #{receiptId}</if>
+            <if test="putId != null  and putId != ''"> and put_id = #{putId}</if>
             <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+            <if test="transferOrNot != null "> and transfer_or_not = #{transferOrNot}</if>
             <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
             <if test="buyerId != null "> and buyer_id = #{buyerId}</if>
+            <if test="status != null "> and status = #{status}</if>
             <if test="trackingNumber != null "> and tracking_number = #{trackingNumber}</if>
             <if test="estimatedArrivalTime != null "> and estimated_arrival_time = #{estimatedArrivalTime}</if>
             <if test="deptId != null "> and dept_id = #{deptId}</if>
             <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
             <if test="operatorId != null "> and operator_id = #{operatorId}</if>
-            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="createTime != null ">
+                AND date_format(create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
         </where>
     </select>
     
@@ -49,12 +60,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectPurchaseVo"/>
         where purchase_id = #{purchaseId}
     </select>
+
+    <select id="selectPurchaseById" parameterType="Long" resultMap="PurchaseResult">
+        <include refid="selectPurchaseVo"/>
+        where id = #{id}
+    </select>
         
-    <insert id="insertPurchase" parameterType="Purchase">
+    <insert id="insertPurchase" parameterType="Purchase" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into purchase
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="purchaseId != null">purchase_id,</if>
+            <if test="receiptId != null">receipt_id,</if>
+            <if test="putId != null">put_id,</if>
             <if test="warehouseId != null">warehouse_id,</if>
+            <if test="transferOrNot != null">transfer_or_not,</if>
             <if test="supplierId != null">supplier_id,</if>
             <if test="buyerId != null">buyer_id,</if>
             <if test="trackingNumber != null">tracking_number,</if>
@@ -74,7 +93,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="purchaseId != null">#{purchaseId},</if>
+            <if test="receiptId != null">#{receiptId},</if>
+            <if test="putId != null">#{putId},</if>
             <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="transferOrNot != null">#{transferOrNot},</if>
             <if test="supplierId != null">#{supplierId},</if>
             <if test="buyerId != null">#{buyerId},</if>
             <if test="trackingNumber != null">#{trackingNumber},</if>
@@ -97,9 +119,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatePurchase" parameterType="Purchase">
         update purchase
         <trim prefix="SET" suffixOverrides=",">
+            <if test="purchaseId != null">purchase_id = #{purchaseId},</if>
+            <if test="receiptId != null">receipt_id = #{receiptId},</if>
+            <if test="putId != null">put_id = #{putId},</if>
             <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="transferOrNot != null">transfer_or_not = #{transferOrNot},</if>
             <if test="supplierId != null">supplier_id = #{supplierId},</if>
             <if test="buyerId != null">buyer_id = #{buyerId},</if>
+            <if test="status != null">status = #{status},</if>
             <if test="trackingNumber != null">tracking_number = #{trackingNumber},</if>
             <if test="settlementMethod != null">settlement_method = #{settlementMethod},</if>
             <if test="currency != null">currency = #{currency},</if>
@@ -115,7 +142,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
-        where purchase_id = #{purchaseId}
+        where id = #{id}
     </update>
 
     <delete id="deletePurchaseByPurchaseId" parameterType="String">
@@ -128,4 +155,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{purchaseId}
         </foreach>
     </delete>
+
+    <select id="selectReceivingList" parameterType="Purchase" resultMap="PurchaseResult">
+        <include refid="selectPurchaseVo"/>
+        <where>
+            <if test="purchaseId != null  and purchaseId != ''"> and purchase_id = #{purchaseId}</if>
+            <if test="receiptId != null  and receiptId != ''"> and receipt_id = #{receiptId}</if>
+            <if test="putId != null  and putId != ''"> and put_id = #{putId}</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+            <if test="transferOrNot != null "> and transfer_or_not = #{transferOrNot}</if>
+            <if test="supplierId != null "> and supplier_id = #{supplierId}</if>
+            <if test="buyerId != null "> and buyer_id = #{buyerId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="trackingNumber != null "> and tracking_number = #{trackingNumber}</if>
+            <if test="estimatedArrivalTime != null "> and estimated_arrival_time = #{estimatedArrivalTime}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="operatorId != null "> and operator_id = #{operatorId}</if>
+            <if test="createTime != null ">
+                AND date_format(create_time,'%y%m%d') = date_format(#{createTime},'%y%m%d')
+            </if>
+             and receipt_id != ''
+        </where>
+    </select>
 </mapper>

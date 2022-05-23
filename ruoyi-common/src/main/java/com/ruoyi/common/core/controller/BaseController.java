@@ -2,6 +2,7 @@ package com.ruoyi.common.core.controller;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,6 +124,18 @@ public class BaseController
     protected AjaxResult toAjax(int rows)
     {
         return rows > 0 ? AjaxResult.success() : AjaxResult.error();
+    }
+
+    /**
+     * 响应返回结果
+     *
+     * @param rows 影响行数
+     * @param msg 提示消息
+     * @return 操作结果
+     */
+    protected AjaxResult toAjax(int rows,String msg)
+    {
+        return rows > 0 ? AjaxResult.success(msg) : AjaxResult.error();
     }
 
     /**

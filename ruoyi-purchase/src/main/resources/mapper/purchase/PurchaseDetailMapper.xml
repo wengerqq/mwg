@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.purchase_detail.mapper.PurchaseDetailMapper">
+    
+    <resultMap type="PurchaseDetail" id="PurchaseDetailResult">
+        <result property="id"    column="id"    />
+        <result property="purchaseKeyId"    column="purchase_key_id"    />
+        <result property="productSku"    column="product_sku"    />
+        <result property="productName"    column="product_name"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="price"    column="price"    />
+        <result property="referencePrice"    column="reference_price"    />
+        <result property="taxRate"    column="tax_rate"    />
+        <result property="remark"    column="remark"    />
+        <result property="externalOrderNo"    column="external_order_no"    />
+        <result property="deliveryTime"    column="delivery_time"    />
+        <result property="status"    column="status"    />
+        <result property="quantityReceived"    column="quantity_received"    />
+        <result property="isShelf"    column="is_shelf"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPurchaseDetailVo">
+        select id, purchase_key_id, product_sku, product_name, quantity, price, reference_price, tax_rate, remark, external_order_no, delivery_time, status, quantity_received, is_shelf, create_time, update_time from purchase_detail
+    </sql>
+
+    <select id="selectPurchaseDetailList" parameterType="PurchaseDetail" resultMap="PurchaseDetailResult">
+        <include refid="selectPurchaseDetailVo"/>
+        <where>  
+            <if test="purchaseKeyId != null  and purchaseKeyId != ''"> and purchase_key_id = #{purchaseKeyId}</if>
+            <if test="productSku != null  and productSku != ''"> and product_sku = #{productSku}</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="quantity != null "> and quantity = #{quantity}</if>
+            <if test="price != null  and price != ''"> and price = #{price}</if>
+            <if test="referencePrice != null  and referencePrice != ''"> and reference_price = #{referencePrice}</if>
+            <if test="taxRate != null  and taxRate != ''"> and tax_rate = #{taxRate}</if>
+            <if test="externalOrderNo != null  and externalOrderNo != ''"> and external_order_no = #{externalOrderNo}</if>
+            <if test="deliveryTime != null "> and delivery_time = #{deliveryTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="quantityReceived != null "> and quantity_received = #{quantityReceived}</if>
+            <if test="isShelf != null "> and is_shelf = #{isShelf}</if>
+        </where>
+    </select>
+    
+    <select id="selectPurchaseDetailById" parameterType="Long" resultMap="PurchaseDetailResult">
+        <include refid="selectPurchaseDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPurchaseDetail" parameterType="PurchaseDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into purchase_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="purchaseKeyId != null">purchase_key_id,</if>
+            <if test="productSku != null">product_sku,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="price != null">price,</if>
+            <if test="referencePrice != null">reference_price,</if>
+            <if test="taxRate != null">tax_rate,</if>
+            <if test="remark != null">remark,</if>
+            <if test="externalOrderNo != null">external_order_no,</if>
+            <if test="deliveryTime != null">delivery_time,</if>
+            <if test="status != null">status,</if>
+            <if test="quantityReceived != null">quantity_received,</if>
+            <if test="isShelf != null">is_shelf,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="purchaseKeyId != null">#{purchaseKeyId},</if>
+            <if test="productSku != null">#{productSku},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="price != null">#{price},</if>
+            <if test="referencePrice != null">#{referencePrice},</if>
+            <if test="taxRate != null">#{taxRate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="externalOrderNo != null">#{externalOrderNo},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="quantityReceived != null">#{quantityReceived},</if>
+            <if test="isShelf != null">#{isShelf},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePurchaseDetail" parameterType="PurchaseDetail">
+        update purchase_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="purchaseKeyId != null">purchase_key_id = #{purchaseKeyId},</if>
+            <if test="productSku != null">product_sku = #{productSku},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="referencePrice != null">reference_price = #{referencePrice},</if>
+            <if test="taxRate != null">tax_rate = #{taxRate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="externalOrderNo != null">external_order_no = #{externalOrderNo},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="quantityReceived != null">quantity_received = #{quantityReceived},</if>
+            <if test="isShelf != null">is_shelf = #{isShelf},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePurchaseDetailById" parameterType="Long">
+        delete from purchase_detail where id = #{id}
+    </delete>
+
+    <delete id="deletePurchaseDetailByIds" parameterType="String">
+        delete from purchase_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="replacePurchaseDetail" parameterType="PurchaseDetail" useGeneratedKeys="true">
+        replace into purchase_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="purchaseKeyId != null">purchase_key_id,</if>
+            <if test="productSku != null">product_sku,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="price != null">price,</if>
+            <if test="referencePrice != null">reference_price,</if>
+            <if test="taxRate != null">tax_rate,</if>
+            <if test="remark != null">remark,</if>
+            <if test="externalOrderNo != null">external_order_no,</if>
+            <if test="deliveryTime != null">delivery_time,</if>
+            <if test="status != null">status,</if>
+            <if test="quantityReceived != null">quantity_received,</if>
+            <if test="isShelf != null">is_shelf,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="purchaseKeyId != null">#{purchaseKeyId},</if>
+            <if test="productSku != null">#{productSku},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="price != null">#{price},</if>
+            <if test="referencePrice != null">#{referencePrice},</if>
+            <if test="taxRate != null">#{taxRate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="externalOrderNo != null">#{externalOrderNo},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="quantityReceived != null">#{quantityReceived},</if>
+            <if test="isShelf != null">#{isShelf},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="deletePurchaseDetailByPurchaseKeyId" parameterType="Long">
+        delete from purchase_detail where purchase_key_id = #{purchaseKeyId}
+    </delete>
+
+    <select id="selectPurchaseDetailByPurchaseKeyId" parameterType="Long" resultMap="PurchaseDetailResult">
+        <include refid="selectPurchaseDetailVo"/>
+        where purchase_key_id = #{purchaseKeyId}
+    </select>
+</mapper>
