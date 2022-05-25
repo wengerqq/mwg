@@ -133,7 +133,7 @@ public class BaseController
      * @param msg 提示消息
      * @return 操作结果
      */
-    protected AjaxResult toAjax(int rows,String msg)
+    protected AjaxResult toAjax(int rows,Object msg)
     {
         return rows > 0 ? AjaxResult.success(msg) : AjaxResult.error();
     }

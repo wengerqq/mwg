@@ -92,5 +92,21 @@ public interface IOrderService
      * @param order 订单管理
      * @return 结果
      */
-    public int updateOrderDa(Order order);
+    public ArrayList<String> updateOrderDa(Order order);
+
+    /**
+     * 修改订单状态
+     *
+     * @param order 订单管理
+     * @return 结果
+     */
+    public int updateOrderValue(Order order);
+
+    /**
+     * 截单提交
+     *
+     * @param order 订单管理
+     * @return 结果
+     */
+    public ArrayList<String> updateOrderCut(Order order);
 }

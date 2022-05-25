@@ -80,3 +80,21 @@ export function updateOrderDa(data) {
   })
 }
 
+// 更新订单状态
+export function updateOrderStatus(data) {
+  return request({
+    url: '/sales/order/updateOrderValue',
+    method: 'post',
+    data: data
+  })
+}
+
+// 截单提交
+export function updateOrderCut(data) {
+  return request({
+    url: '/sales/order/updateOrderCut',
+    method: 'post',
+    data: data
+  })
+}
+

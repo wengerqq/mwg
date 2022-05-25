@@ -13,7 +13,13 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.DictUtils;
 import com.ruoyi.detail.domain.OrderDetail;
 import com.ruoyi.detail.mapper.OrderDetailMapper;
+import com.ruoyi.products.domain.Products;
+import com.ruoyi.products.mapper.ProductsMapper;
+import com.ruoyi.stock_check.domain.StockCheck;
+import com.ruoyi.stock_check.mapper.StockCheckMapper;
+import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import com.ruoyi.order.mapper.OrderMapper;
 import com.ruoyi.order.domain.Order;
@@ -33,6 +39,12 @@ public class OrderServiceImpl implements IOrderService
 
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+
+    @Autowired
+    private StockCheckMapper stockCheckMapper;
+
+    @Autowired
+    private ProductsMapper productsMapper;
 
     /**
      * 查询订单管理
@@ -250,14 +262,102 @@ public class OrderServiceImpl implements IOrderService
      * @return 结果
      */
     @Override
-    public int updateOrderDa(Order order)
+    public ArrayList<String> updateOrderDa(Order order)
     {
         List<Order> orderList = orderMapper.selectOrderByIds(order);
+        int successNum = 0;
+        int failNum = 0;
+        String five = "";
+        String six = "";
+        String two = "";
+        ArrayList<String> msgData = new ArrayList<String>();
         for (Order o:orderList) {
-            o.setDeliveryWarehouseId(order.getDeliveryWarehouseId());
-            o.setWarehouseDeliveryId(order.getWarehouseDeliveryId());
-            int result = orderMapper.updateOrder(o);
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrderKeyId(o.getId());
+            List<OrderDetail> orderDetailList = orderDetailMapper.selectOrderDetailList(orderDetail);
+            int a = 0;
+            int b = 0;
+            if(orderDetailList.size()>0){
+                for(OrderDetail od:orderDetailList){
+                    Products products = productsMapper.selectProductsBySku(od.getProductSku());
+                    if(products==null){
+                        od.setAbnormal("产品SKU不存在");
+                        a++;
+                    }else{
+                        StockCheck stockCheck = new StockCheck();
+                        stockCheck.setProductsId(products.getId());
+                        List<StockCheck> stockCheckList = stockCheckMapper.selectStockCheckList(stockCheck);
+                        if(stockCheckList==null||stockCheckList.get(0).getSaleableQuantity()<od.getQuantity()){
+                            od.setAbnormal("库存不足或没有采购记录");
+                            b++;
+                        }else{
+                            od.setAbnormal("");
+                        }
+                    }
+                    orderDetailMapper.updateOrderDetail(od);
+                }
+            }else{
+                a=1;
+            }
+            if(a > 0){
+                o.setStatus(6L);
+                six += "<span style='font-weight: bold;'>"+o.getOrderId()+"</span> 提交失败，原因：<span style='color:red;'>产品SKU不存在【问题件】</span><br/>";
+                failNum++;
+            }else if(b>0){
+                o.setStatus(5L);
+                five += "<span style='font-weight: bold;'>"+o.getOrderId()+"</span> 提交失败，原因：<span style='color:red;'>库存不足或没有采购记录【缺货】</span><br/>";
+                failNum++;
+            }else{
+                o.setStatus(2L);
+                o.setDeliveryWarehouseId(order.getDeliveryWarehouseId());
+                o.setWarehouseDeliveryId(order.getWarehouseDeliveryId());
+                two += "<span style='font-weight: bold;'>"+o.getOrderId()+"</span> <span style='color:green;'>提交成功</span><br/>";
+                successNum++;
+            }
+            orderMapper.updateOrder(o);
         }
-        return 1;
+        if(five!="")msgData.add(five);
+        if(six!="")msgData.add(six);
+        if(two!="")msgData.add(two);
+        msgData.add("共 <span style='color:blue;'>"+orderList.size()+"</span> 条订单，成功 <span style='color:green;'>"+successNum+"</span> 条，失败 <span style='color:red;'>"+failNum+"</span> 条");
+        return msgData;
+    }
+
+    /**
+     * 修改订单状态
+     *
+     * @param order 订单管理
+     * @return 结果
+     */
+    @Override
+    public int updateOrderValue(Order order)
+    {
+        return orderMapper.updateOrderValue(order);
+    }
+
+    /**
+     * 截单提交
+     *
+     * @param order 订单管理
+     * @return 结果
+     */
+    @Override
+    public ArrayList<String> updateOrderCut(Order order)
+    {
+        List<Order> orderList = orderMapper.selectOrderByIds(order);
+        int successNum = 0;
+        int failNum = 0;
+        String six = "";
+        ArrayList<String> msgData = new ArrayList<String>();
+        for (Order o:orderList) {
+            o.setStatus(6L);
+            o.setSignType(order.getSignType());
+            o.setAbnormal(order.getAbnormal());
+            orderMapper.updateOrder(o);
+            six += o.getOrderId()+" 已成功拦截<br/>";
+            successNum++;
+        }
+        msgData.add(six+"共 <span style='color:blue;'>"+orderList.size()+"</span> 条订单，成功 <span style='color:green;'>"+successNum+"</span> 条，失败 <span style='color:red;'>"+failNum+"</span> 条");
+        return msgData;
     }
 }

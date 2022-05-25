@@ -144,6 +144,28 @@ public class OrderController extends BaseController
     @PostMapping("/updateOrderDa")
     public AjaxResult updateOrderDa(@RequestBody Order order)
     {
-        return toAjax(orderService.updateOrderDa(order));
+        ArrayList<String> msgData = orderService.updateOrderDa(order);
+        return toAjax(1,msgData);
+    }
+
+    /**
+     * 更新订单某字段值
+     */
+    @Log(title = "订单管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/updateOrderValue")
+    public AjaxResult updateOrderValue(@RequestBody Order order)
+    {
+        return toAjax(orderService.updateOrderValue(order));
+    }
+
+    /**
+     * 截单提交
+     */
+    @Log(title = "订单管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/updateOrderCut")
+    public AjaxResult updateOrderCut(@RequestBody Order order)
+    {
+        ArrayList<String> msgData = orderService.updateOrderCut(order);
+        return toAjax(1,msgData);
     }
 }

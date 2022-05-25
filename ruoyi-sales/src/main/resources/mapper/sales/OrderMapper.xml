@@ -39,13 +39,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="billingAddress"    column="billing_address"    />
         <result property="signType"    column="sign_type"    />
         <result property="finalMark"    column="final_mark"    />
+        <result property="abnormal"    column="abnormal"    />
         <result property="auditTime"    column="audit_time"    />
         <result property="deliveryTime"    column="delivery_time"    />
         <result property="createTime"    column="create_time"    />
     </resultMap>
 
     <sql id="selectOrderVo">
-        select id, order_id, status, site, buyer_code, buyer_name, buyer_email, total, freight, total_freight, reference_number, warehouse_number, delivery_warehouse_id, payment_method_id, warehouse_delivery_id, weight, recipient_tax_number, customer_service_remarks, order_remarks, country_code_of_tax_number, addressee, phone, company_name, recipient_country, recipient_province_state, city, district, detailed_address, house_number, zip_code, cpf_tax_or_customs_clearance_serial_number, billing_address, sign_type, final_mark, audit_time, delivery_time, create_time from `order`
+        select id, order_id, status, site, buyer_code, buyer_name, buyer_email, total, freight, total_freight, reference_number, warehouse_number, delivery_warehouse_id, payment_method_id, warehouse_delivery_id, weight, recipient_tax_number, customer_service_remarks, order_remarks, country_code_of_tax_number, addressee, phone, company_name, recipient_country, recipient_province_state, city, district, detailed_address, house_number, zip_code, cpf_tax_or_customs_clearance_serial_number, billing_address, sign_type, final_mark, abnormal, audit_time, delivery_time, create_time from `order`
     </sql>
 
     <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
@@ -84,6 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="billingAddress != null  and billingAddress != ''"> and billing_address = #{billingAddress}</if>
             <if test="signType != null "> and sign_type = #{signType}</if>
             <if test="finalMark != null "> and final_mark = #{finalMark}</if>
+            <if test="abnormal != null "> and abnormal = #{abnormal}</if>
             <if test="auditTime != null "> and audit_time = #{auditTime}</if>
             <if test="deliveryTime != null "> and delivery_time = #{deliveryTime}</if>
         </where>
@@ -131,6 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="billingAddress != null">billing_address,</if>
             <if test="signType != null">sign_type,</if>
             <if test="finalMark != null">final_mark,</if>
+            <if test="abnormal != null">abnormal,</if>
             <if test="auditTime != null">audit_time,</if>
             <if test="deliveryTime != null">delivery_time,</if>
             <if test="createTime != null">create_time,</if>
@@ -170,6 +173,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="billingAddress != null">#{billingAddress},</if>
             <if test="signType != null">#{signType},</if>
             <if test="finalMark != null">#{finalMark},</if>
+            <if test="abnormal != null">#{abnormal},</if>
             <if test="auditTime != null">#{auditTime},</if>
             <if test="deliveryTime != null">#{deliveryTime},</if>
             <if test="createTime != null">#{createTime},</if>
@@ -212,6 +216,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="billingAddress != null">billing_address = #{billingAddress},</if>
             <if test="signType != null">sign_type = #{signType},</if>
             <if test="finalMark != null">final_mark = #{finalMark},</if>
+            <if test="abnormal != null">abnormal = #{abnormal},</if>
             <if test="auditTime != null">audit_time = #{auditTime},</if>
             <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
@@ -238,6 +243,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="warehouseDeliveryId != null">warehouse_delivery_id = #{warehouseDeliveryId},</if>
             <if test="customerServiceRemarks != null">customer_service_remarks = #{customerServiceRemarks},</if>
             <if test="signType != null">sign_type = #{signType},</if>
+            <if test="abnormal != null">abnormal = #{abnormal},</if>
         </trim>
         where id in
         <foreach item="params.ids" collection="params.ids" open="(" separator="," close=")">

@@ -153,6 +153,10 @@ public class Order extends BaseEntity
     @Excel(name = "终审标志")
     private Long finalMark;
 
+    /** 账单地址 */
+    @Excel(name = "账单地址")
+    private String abnormal;
+
     /** 审核时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "审核时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -469,6 +473,15 @@ public class Order extends BaseEntity
     {
         return finalMark;
     }
+    public void setAbnormal(String abnormal)
+    {
+        this.abnormal = abnormal;
+    }
+
+    public String getAbnormal()
+    {
+        return abnormal;
+    }
     public void setAuditTime(Date auditTime) 
     {
         this.auditTime = auditTime;
@@ -525,6 +538,7 @@ public class Order extends BaseEntity
             .append("billingAddress", getBillingAddress())
             .append("signType", getSignType())
             .append("finalMark", getFinalMark())
+            .append("abnormal", getAbnormal())
             .append("auditTime", getAuditTime())
             .append("deliveryTime", getDeliveryTime())
             .append("createTime", getCreateTime())

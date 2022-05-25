@@ -13,10 +13,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="price"    column="price"    />
         <result property="stock"    column="stock"    />
         <result property="remarks"    column="remarks"    />
+        <result property="abnormal"    column="abnormal"    />
     </resultMap>
 
     <sql id="selectOrderDetailVo">
-        select id, order_key_id, product_sku, product_name, quantity, price, stock, remarks from order_detail
+        select id, order_key_id, product_sku, product_name, quantity, price, stock, remarks, abnormal from order_detail
     </sql>
 
     <select id="selectOrderDetailList" parameterType="OrderDetail" resultMap="OrderDetailResult">
@@ -29,6 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="price != null  and price != ''"> and price = #{price}</if>
             <if test="stock != null "> and stock = #{stock}</if>
             <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="abnormal != null  and abnormal != ''"> and abnormal = #{abnormal}</if>
         </where>
     </select>
     
@@ -47,7 +49,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="price != null">price,</if>
             <if test="stock != null">stock,</if>
             <if test="remarks != null">remarks,</if>
-         </trim>
+            <if test="abnormal != null">abnormal,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderKeyId != null">#{orderKeyId},</if>
             <if test="productSku != null">#{productSku},</if>
@@ -56,7 +59,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="price != null">#{price},</if>
             <if test="stock != null">#{stock},</if>
             <if test="remarks != null">#{remarks},</if>
-         </trim>
+            <if test="abnormal != null">#{abnormal},</if>
+        </trim>
     </insert>
 
     <update id="updateOrderDetail" parameterType="OrderDetail">
@@ -69,6 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="price != null">price = #{price},</if>
             <if test="stock != null">stock = #{stock},</if>
             <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="abnormal != null">abnormal = #{abnormal},</if>
         </trim>
         where id = #{id}
     </update>

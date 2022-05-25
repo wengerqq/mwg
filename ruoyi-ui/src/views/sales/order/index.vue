@@ -328,7 +328,7 @@
           <el-table-column label="订单详情" align="center">
             <template slot-scope="scope">
               <span>
-                订单：<el-button @click="handleUpdate(scope.row)" type="text">{{scope.row.orderId}}</el-button><br/>
+                订单：<el-button @click="handleUpdate(scope.row)" type="text" style="font-weight: bold;">{{scope.row.orderId}}</el-button><br/>
                 买家名称：{{scope.row.buyerName}}<br/>
                 Email：{{scope.row.buyerEmail}}<br/>
                 参考号：{{scope.row.referenceNumber}}<br/>
@@ -339,22 +339,24 @@
           <el-table-column label="订单明细" align="center" width="600">
             <template slot-scope="scope">
               <el-row v-for="(detail, key) in scope.row.params.orderDetailList" :key="key" :class="scope.row.params.orderDetailList.length==1||key+1==scope.row.params.orderDetailList.length?'no-border':'yes-border'">
-                <el-col :span="8">
+                <el-col :span="10">
                   <el-row>
                     <el-col :span="24">
                       <el-row><el-col :span="24">产品名称：{{ detail.productName }}</el-col></el-row>
                       <el-row><el-col :span="24">产品SKU：{{ detail.productSku }}</el-col></el-row>
+                      <el-row v-if="detail.abnormal"><el-col :span="24" style="font-weight: bold;">SKU异常：<span style="color: red;">{{ detail.abnormal }}</span></el-col></el-row>
                     </el-col>
                   </el-row>
                 </el-col>
-                <el-col :span="16">
+                <el-col :span="14">
                   <el-row>
                     <el-col :span="12">数量：{{ detail.quantity }}</el-col>
                     <el-col :span="12">单价：{{ detail.price }}</el-col>
                   </el-row>
                 </el-col>
               </el-row>
-              <div style="font-weight: bolder;float: left;" v-if="scope.row.customerServiceRemarks">客服备注：<label style="color:blue;">{{scope.row.customerServiceRemarks}}</label></div>
+              <div style="font-weight: bolder;text-align: left;padding: 15px 0px 8px 0px;border-top: 1px solid #E0E0E0;width: 100%;" v-if="scope.row.customerServiceRemarks">客服备注：<label style="color:#1890ff;">{{scope.row.customerServiceRemarks}}</label></div>
+              <div style="font-weight: bolder;text-align: left;padding-top:8px;border-top: 1px solid #E0E0E0;width: 100%;" v-if="scope.row.customerServiceRemarks">异常信息：<label style="color:red;">{{scope.row.abnormal}}</label></div>
             </template>
           </el-table-column>
           <el-table-column label="订单金额" align="center">
@@ -681,6 +683,50 @@
         <el-button type="primary" @click="okDa">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 截单 -->
+    <el-dialog
+      title="截单"
+      :visible.sync="dialogVisibleCut"
+      width="30%"
+      @close="closeCut">
+      <div>
+        <div>
+          <el-checkbox v-model="cutChecked" @change="isChecked">确认服务商已删除该订单</el-checkbox>
+        </div>
+        <div style="padding:20px 0px;">
+          截单原因：
+          <el-select v-model="interceptReason" @change="form.abnormal = interceptReason" placeholder="请选择" style="width: 170px;margin-right: 20px;">
+            <el-option
+              v-for="item in dict.type.cut_order_reason"
+              :key="item.value"
+              :label="item.label"
+              :value="item.label">
+            </el-option>
+          </el-select>
+          自定义标记：
+          <el-select v-model="signId" @change="form.signType = signId" placeholder="请选择" style="width: 170px;">
+            <el-option
+              v-for="childList in orderSignList[6]"
+              :key="childList.dictValue"
+              :label="childList.dictLabel"
+              :value="childList.dictValue">
+            </el-option>
+          </el-select>
+        </div>
+        <div>
+          <el-input
+            type="textarea"
+            :rows="4"
+            placeholder="请输入内容"
+            v-model="interceptReason">
+          </el-input>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="okCut">截单后转问题件</el-button>
+        <el-button @click="dialogVisibleCut = false">关 闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <style type="text/css">
@@ -700,15 +746,16 @@
   .da .el-dialog__body{padding:0px 20px 30px 20px; }
   .select-show{display: block;}
   .select-hidden{display: none;}
+  .msgbox{width: 450px;}
 </style>
 <script>
-import { listOrder, getOrder, delOrder, addOrder, updateOrder, getOrderStatusList, updateOrderSign, updateOrderRemarks, updateOrderDa } from "@/api/sales/order";
+import { listOrder, getOrder, delOrder, addOrder, updateOrder, getOrderStatusList, updateOrderSign, updateOrderRemarks, updateOrderDa, updateOrderStatus, updateOrderCut } from "@/api/sales/order";
 import {listWarehouse_settings} from "@/api/warehouse/warehouse_settings";
 import { addData } from "@/api/system/dict/data";
 
 export default {
   name: "Order",
-  dicts: ['sys_shipping_type','sys_payment_collection','sys_order_status','sys_shipping_type'],
+  dicts: ['sys_shipping_type','sys_payment_collection','sys_order_status','sys_shipping_type','cut_order_reason'],
   data() {
     return {
       // 遮罩层
@@ -802,6 +849,11 @@ export default {
       /** 发货审核 */
       dialogVisibleDa:false,
       selectDa:"1",
+      /** 截单 */
+      dialogVisibleCut:false,
+      interceptReason:null,
+      signId:null,
+      cutChecked:false
     };
   },
   created() {
@@ -990,13 +1042,20 @@ export default {
     },
     //提交发货审核
     okDa(){
-      if(this.form.deliveryWarehouseId == null || this.form.warehouseDeliveryId == null){
+      if((this.form.deliveryWarehouseId == null || this.form.warehouseDeliveryId == null) && this.selectDa=="2"){
         this.$modal.msgError("请选择仓库和运输方式");
         return false;
       }
       this.form.params.ids = this.ids;
       updateOrderDa(this.form).then(response => {
-        this.$modal.msgSuccess("提交成功");
+        let msg = "";
+        for(let i=0;i<response.data.length;i++){
+          msg += response.data[i];
+        }
+        this.$alert(msg, '处理结果', {
+          customClass:'msgbox',
+          dangerouslyUseHTMLString: true
+        });
         this.dialogVisibleDa = false;
         this.getList();
       });
@@ -1059,7 +1118,44 @@ export default {
       this.selectSign = this.addSign = null;
       document.getElementsByClassName("select-sign")[0].classList.remove("select-sign");
     },
-
+    /** 截单 */
+    //关闭截单弹窗事件
+    closeCut(){
+      this.interceptReason = this.signId = null;
+      this.cutChecked = false;
+    },
+    //选中改变事件
+    isChecked(event){
+      this.cutChecked = event;
+    },
+    //截单提交
+    okCut(){
+      if(!this.cutChecked){
+        this.$confirm('您还未勾选确认服务商是否已删除该订单，是否确认？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.cutChecked = true;
+        }).catch(() => {
+          this.cutChecked = false;
+        });
+        return false;
+      }
+      this.form.params.ids = this.ids;
+      updateOrderCut(this.form).then(response => {
+        let msg = "";
+        for(let i=0;i<response.data.length;i++){
+          msg += response.data[i];
+        }
+        this.$alert(msg, '处理结果', {
+          customClass:'msgbox',
+          dangerouslyUseHTMLString: true
+        });
+        this.dialogVisibleCut = false;
+        this.getList();
+      });
+    },
     /** 待发货审核 */
     /** 待发货 */
     /** 已发货 */
@@ -1096,15 +1192,19 @@ export default {
     },
     //冻结
     frozen(status){
-      alert("冻结"+status);
+      this.updateOrderStatus(4);
     },
     //截单
     cutOrder(status){
-      alert("截单"+status);
+      if(!this.ids.length){
+        this.$modal.msgError("请先选择订单");
+        return false;
+      }
+      this.dialogVisibleCut = true;
     },
     //作废
     toVoid(status){
-      alert("作废"+status);
+      this.updateOrderStatus(7)
     },
     //客服备注
     csRemarks(status){
@@ -1166,6 +1266,40 @@ export default {
           break;
         default:;
       }
+    },
+
+    //更新订单状态
+    updateOrderStatus(type){
+      let msg = "";
+      switch (type){
+        case 4:msg="冻结";break;
+        case 7:msg="废弃";break;
+        default:;
+      }
+      if(!this.ids.length){
+        this.$modal.msgError("请先选择订单");
+        return false;
+      }
+      this.$confirm('确定执行冻结操作吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.form.status = type;
+        this.form.params.ids = this.ids;
+        updateOrderStatus(this.form).then(response => {
+          this.$message({
+            type: 'success',
+            message: '已'+msg
+          });
+          this.getList();
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
     }
   }
 };

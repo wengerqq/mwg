@@ -46,6 +46,10 @@ public class OrderDetail extends BaseEntity
     @Excel(name = "备注")
     private String remarks;
 
+    /** 异常 */
+    @Excel(name = "异常")
+    private String abnormal;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -118,6 +122,15 @@ public class OrderDetail extends BaseEntity
     {
         return remarks;
     }
+    public void setAbnormal(String abnormal)
+    {
+        this.abnormal = abnormal;
+    }
+
+    public String getAbnormal()
+    {
+        return abnormal;
+    }
 
     @Override
     public String toString() {
@@ -130,6 +143,7 @@ public class OrderDetail extends BaseEntity
             .append("price", getPrice())
             .append("stock", getStock())
             .append("remarks", getRemarks())
+            .append("abnormal", getAbnormal())
             .toString();
     }
 }
