@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2022-05-25 10:37:05
+Date: 2022-05-26 16:34:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -410,7 +410,7 @@ CREATE TABLE `order` (
   `sign_type` int(11) DEFAULT NULL COMMENT '自定义标记编号',
   `final_mark` int(11) DEFAULT '0' COMMENT '终审标志，当为1时，表示已审核完毕',
   `abnormal` varchar(255) DEFAULT NULL COMMENT '异常信息',
-  `audit_time` datetime DEFAULT NULL COMMENT '审核时间',
+  `audit_time` datetime DEFAULT '0000-00-00 00:00:00' COMMENT '审核时间',
   `delivery_time` datetime DEFAULT NULL COMMENT '发货时间',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
@@ -419,8 +419,8 @@ CREATE TABLE `order` (
 -- ----------------------------
 -- Records of order
 -- ----------------------------
-INSERT INTO `order` VALUES ('2', 'DD123456789', '2', '1', '888', '马大炮', '1163463158@qq.com', '150', '20', '170', '123456', 'CKH123456', '4', '2', '0', null, null, 'sads', '订单憋住测试', null, '樱木', '1591881', '车画公司', '中国ZN', '广东省这种', '珠海市', '香洲区', '屏北二路', '7号', '539000', null, null, '1', '0', null, null, null, '2022-05-11 11:35:14');
-INSERT INTO `order` VALUES ('3', 'DD123456790', '2', '23', '666', '樱木', '2030826396@qq.com', '151', '21', '171', '1234567', 'CKH1234657', '5', '2', '0', null, null, '无产品信息', '订单测试1', null, '英子', '1591882', '大炮公司', '中国ZN', '瓜农冻上', '水电费', '是否', '水电费', '发送到', '539001', null, null, '1', '0', null, null, null, '2022-05-19 16:13:04');
+INSERT INTO `order` VALUES ('2', 'DD123456789', '1', '1', '888', '马大炮', '1163463158@qq.com', '150', '20', '170', '123456', 'CKH123456', '4', '2', '0', null, null, 'fds', '订单憋住测试', null, '樱木', '1591881', '车画公司', '中国ZN', '广东省这种', '珠海市', '香洲区', '屏北二路', '7号', '539000', null, null, '0', '0', '换地址', null, null, '2022-05-11 11:35:14');
+INSERT INTO `order` VALUES ('3', 'DD123456790', '1', '23', '666', '樱木', '2030826396@qq.com', '151', '21', '171', '1234567', 'CKH1234657', '5', '2', '0', null, null, 'fds', '订单测试1', null, '英子', '1591882', '大炮公司', '中国ZN', '瓜农冻上', '水电费', '是否', '水电费', '发送到', '539001', null, null, '0', '0', '换地址', null, null, '2022-05-19 16:13:04');
 
 -- ----------------------------
 -- Table structure for order_detail
@@ -771,7 +771,7 @@ CREATE TABLE `qrtz_scheduler_state` (
 -- ----------------------------
 -- Records of qrtz_scheduler_state
 -- ----------------------------
-INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'BF-2020080717091653378792640', '1653390287926', '15000');
+INSERT INTO `qrtz_scheduler_state` VALUES ('RuoyiScheduler', 'BF-2020080717091653553438278', '1653554042471', '15000');
 
 -- ----------------------------
 -- Table structure for qrtz_simple_triggers
@@ -848,9 +848,9 @@ CREATE TABLE `qrtz_triggers` (
 -- ----------------------------
 -- Records of qrtz_triggers
 -- ----------------------------
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', null, '1653378800000', '-1', '5', 'PAUSED', 'CRON', '1653378792000', '0', null, '2', '');
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', null, '1653378795000', '-1', '5', 'PAUSED', 'CRON', '1653378793000', '0', null, '2', '');
-INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', null, '1653378800000', '-1', '5', 'PAUSED', 'CRON', '1653378793000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME1', 'DEFAULT', 'TASK_CLASS_NAME1', 'DEFAULT', null, '1653553440000', '-1', '5', 'PAUSED', 'CRON', '1653553438000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME2', 'DEFAULT', 'TASK_CLASS_NAME2', 'DEFAULT', null, '1653553440000', '-1', '5', 'PAUSED', 'CRON', '1653553438000', '0', null, '2', '');
+INSERT INTO `qrtz_triggers` VALUES ('RuoyiScheduler', 'TASK_CLASS_NAME3', 'DEFAULT', 'TASK_CLASS_NAME3', 'DEFAULT', null, '1653553440000', '-1', '5', 'PAUSED', 'CRON', '1653553438000', '0', null, '2', '');
 
 -- ----------------------------
 -- Table structure for stock_check
@@ -985,7 +985,7 @@ CREATE TABLE `sys_dict_data` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=utf8 COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8 COMMENT='字典数据表';
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -1131,6 +1131,8 @@ INSERT INTO `sys_dict_data` VALUES ('155', '0', '测试标记', '1', 'order_owfs
 INSERT INTO `sys_dict_data` VALUES ('156', '0', '取消订单', '0', 'cut_order_reason', null, 'default', 'N', '0', 'admin', '2022-05-24 18:41:11', '', null, null);
 INSERT INTO `sys_dict_data` VALUES ('157', '0', 'SKU不存在', '1', 'cut_order_reason', null, 'default', 'N', '0', 'admin', '2022-05-24 18:41:29', '', null, null);
 INSERT INTO `sys_dict_data` VALUES ('158', '0', '换地址', '2', 'cut_order_reason', null, 'default', 'N', '0', 'admin', '2022-05-24 18:41:43', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('159', '0', '测试1', '1', 'order_opp', null, 'default', 'N', '0', 'admin', '2022-05-25 16:05:00', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('160', '0', '测试666', '2', 'order_opp', null, 'default', 'N', '0', 'admin', '2022-05-25 16:05:14', '', null, null);
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -1258,7 +1260,7 @@ CREATE TABLE `sys_logininfor` (
   `msg` varchar(255) DEFAULT '' COMMENT '提示消息',
   `login_time` datetime DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=659 DEFAULT CHARSET=utf8 COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=668 DEFAULT CHARSET=utf8 COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -1822,6 +1824,15 @@ INSERT INTO `sys_logininfor` VALUES ('655', 'admin', '127.0.0.1', '内网IP', 'C
 INSERT INTO `sys_logininfor` VALUES ('656', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-24 15:53:45');
 INSERT INTO `sys_logininfor` VALUES ('657', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-24 17:08:11');
 INSERT INTO `sys_logininfor` VALUES ('658', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-24 18:38:51');
+INSERT INTO `sys_logininfor` VALUES ('659', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-25 11:00:27');
+INSERT INTO `sys_logininfor` VALUES ('660', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '1', '验证码错误', '2022-05-25 13:36:29');
+INSERT INTO `sys_logininfor` VALUES ('661', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-25 13:36:32');
+INSERT INTO `sys_logininfor` VALUES ('662', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-25 15:12:13');
+INSERT INTO `sys_logininfor` VALUES ('663', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-25 18:24:53');
+INSERT INTO `sys_logininfor` VALUES ('664', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-26 08:45:35');
+INSERT INTO `sys_logininfor` VALUES ('665', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-26 09:27:14');
+INSERT INTO `sys_logininfor` VALUES ('666', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-26 14:39:27');
+INSERT INTO `sys_logininfor` VALUES ('667', 'admin', '127.0.0.1', '内网IP', 'Chrome 10', 'Windows 10', '0', '登录成功', '2022-05-26 15:54:38');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -2074,7 +2085,7 @@ CREATE TABLE `sys_oper_log` (
   `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1516 DEFAULT CHARSET=utf8 COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=1554 DEFAULT CHARSET=utf8 COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -3495,6 +3506,44 @@ INSERT INTO `sys_oper_log` VALUES ('1512', '字典类型', '1', 'com.ruoyi.web.c
 INSERT INTO `sys_oper_log` VALUES ('1513', '字典数据', '1', 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', '1', 'admin', null, '/system/dict/data', '127.0.0.1', '内网IP', '{\"dictValue\":\"0\",\"listClass\":\"default\",\"dictSort\":0,\"params\":{},\"dictType\":\"cut_order_reason\",\"dictLabel\":\"取消订单\",\"createBy\":\"admin\",\"default\":false,\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-24 18:41:11');
 INSERT INTO `sys_oper_log` VALUES ('1514', '字典数据', '1', 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', '1', 'admin', null, '/system/dict/data', '127.0.0.1', '内网IP', '{\"dictValue\":\"1\",\"listClass\":\"default\",\"dictSort\":0,\"params\":{},\"dictType\":\"cut_order_reason\",\"dictLabel\":\"SKU不存在\",\"createBy\":\"admin\",\"default\":false,\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-24 18:41:29');
 INSERT INTO `sys_oper_log` VALUES ('1515', '字典数据', '1', 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', '1', 'admin', null, '/system/dict/data', '127.0.0.1', '内网IP', '{\"dictValue\":\"2\",\"listClass\":\"default\",\"dictSort\":0,\"params\":{},\"dictType\":\"cut_order_reason\",\"dictLabel\":\"换地址\",\"createBy\":\"admin\",\"default\":false,\"status\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-24 18:41:43');
+INSERT INTO `sys_oper_log` VALUES ('1516', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderRemarks()', 'POST', '1', 'admin', null, '/sales/order/updateOrderRemarks', '127.0.0.1', '内网IP', '{\"ids\":[2,3]}', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3\r\n### The error may exist in file [D:\\若依\\RuoYi-Vue-master\\mwg\\ruoyi-sales\\target\\classes\\mapper\\sales\\OrderMapper.xml]\r\n### The error may involve com.ruoyi.order.mapper.OrderMapper.updateOrderValue-Inline\r\n### The error occurred while setting parameters\r\n### SQL: update `order`                    where id in          (               ?          ,              ?          )\r\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3', '2022-05-25 11:32:39');
+INSERT INTO `sys_oper_log` VALUES ('1517', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderRemarks()', 'POST', '1', 'admin', null, '/sales/order/updateOrderRemarks', '127.0.0.1', '内网IP', '{\"ids\":[2,3]}', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3\r\n### The error may exist in file [D:\\若依\\RuoYi-Vue-master\\mwg\\ruoyi-sales\\target\\classes\\mapper\\sales\\OrderMapper.xml]\r\n### The error may involve com.ruoyi.order.mapper.OrderMapper.updateOrderValue-Inline\r\n### The error occurred while setting parameters\r\n### SQL: update `order`                    where id in          (               ?          ,              ?          )\r\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3', '2022-05-25 11:32:43');
+INSERT INTO `sys_oper_log` VALUES ('1518', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderRemarks()', 'POST', '1', 'admin', null, '/sales/order/updateOrderRemarks', '127.0.0.1', '内网IP', '{\"ids\":[2,3]}', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3\r\n### The error may exist in file [D:\\若依\\RuoYi-Vue-master\\mwg\\ruoyi-sales\\target\\classes\\mapper\\sales\\OrderMapper.xml]\r\n### The error may involve com.ruoyi.order.mapper.OrderMapper.updateOrderValue-Inline\r\n### The error occurred while setting parameters\r\n### SQL: update `order`                    where id in          (               ?          ,              ?          )\r\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'where id in\n         (  \n            2\n         , \n            3\n         )\' at line 3', '2022-05-25 11:32:48');
+INSERT INTO `sys_oper_log` VALUES ('1519', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderRemarks()', 'POST', '1', 'admin', null, '/sales/order/updateOrderRemarks', '127.0.0.1', '内网IP', '{\"ids\":[2,3],\"remarks\":\"sd\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-25 11:58:03');
+INSERT INTO `sys_oper_log` VALUES ('1520', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderRemarks()', 'POST', '1', 'admin', null, '/sales/order/updateOrderRemarks', '127.0.0.1', '内网IP', '{\"ids\":[2,3],\"remarks\":\"sdsdssd\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-25 11:58:13');
+INSERT INTO `sys_oper_log` VALUES ('1521', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderRemarks()', 'POST', '1', 'admin', null, '/sales/order/updateOrderRemarks', '127.0.0.1', '内网IP', '{\"ids\":[2,3],\"remarks\":\"fds\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-25 11:58:29');
+INSERT INTO `sys_oper_log` VALUES ('1522', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"params\":{}}', null, '1', 'nested exception is org.apache.ibatis.builder.BuilderException: The expression \'params.ids\' evaluated to a null value.', '2022-05-25 15:12:29');
+INSERT INTO `sys_oper_log` VALUES ('1523', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"params\":{}}', null, '1', 'nested exception is org.apache.ibatis.builder.BuilderException: The expression \'params.ids\' evaluated to a null value.', '2022-05-25 15:13:11');
+INSERT INTO `sys_oper_log` VALUES ('1524', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"params\":{}}', null, '1', 'nested exception is org.apache.ibatis.builder.BuilderException: The expression \'params.ids\' evaluated to a null value.', '2022-05-25 15:14:58');
+INSERT INTO `sys_oper_log` VALUES ('1525', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":1,\"params\":{},\"abnormal\":\"SKU不存在\"}', null, '1', 'nested exception is org.apache.ibatis.builder.BuilderException: The expression \'params.ids\' evaluated to a null value.', '2022-05-25 15:30:10');
+INSERT INTO `sys_oper_log` VALUES ('1526', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":1,\"params\":{},\"abnormal\":\"SKU不存在\"}', null, '1', 'nested exception is org.apache.ibatis.builder.BuilderException: The expression \'params.ids\' evaluated to a null value.', '2022-05-25 15:30:14');
+INSERT INTO `sys_oper_log` VALUES ('1527', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":1,\"params\":{},\"abnormal\":\"取消订单\"}', null, '1', 'nested exception is org.apache.ibatis.builder.BuilderException: The expression \'params.ids\' evaluated to a null value.', '2022-05-25 15:34:49');
+INSERT INTO `sys_oper_log` VALUES ('1528', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":1,\"params\":{},\"abnormal\":\"取消订单\"}', null, '1', 'nested exception is org.apache.ibatis.builder.BuilderException: The expression \'params.ids\' evaluated to a null value.', '2022-05-25 15:38:49');
+INSERT INTO `sys_oper_log` VALUES ('1529', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":1,\"params\":{\"ids\":[2,3]},\"abnormal\":\"SKU不存在\"}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"DD123456789 已拦截\",\"DD123456790 已拦截\",\"共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>2</span> 条，失败 <span style=\'color:red;\'>0</span> 条\"]}', '0', null, '2022-05-25 15:42:15');
+INSERT INTO `sys_oper_log` VALUES ('1530', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":0,\"params\":{\"ids\":[2,3]},\"abnormal\":\"取消订单\"}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"DD123456789 已拦截\",\"DD123456790 已拦截\",\"共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>2</span> 条，失败 <span style=\'color:red;\'>0</span> 条\"]}', '0', null, '2022-05-25 15:44:35');
+INSERT INTO `sys_oper_log` VALUES ('1531', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":1,\"params\":{\"ids\":[2,3]},\"abnormal\":\"换地址\"}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"DD123456789 已拦截\",\"DD123456790 已拦截\",\"共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>2</span> 条，失败 <span style=\'color:red;\'>0</span> 条\"]}', '0', null, '2022-05-25 15:50:45');
+INSERT INTO `sys_oper_log` VALUES ('1532', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":0,\"params\":{\"ids\":[2,3]},\"abnormal\":\"SKU不存在\"}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"DD123456789 已成功拦截<br/>DD123456790 已成功拦截<br/>共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>2</span> 条，失败 <span style=\'color:red;\'>0</span> 条\"]}', '0', null, '2022-05-25 15:55:50');
+INSERT INTO `sys_oper_log` VALUES ('1533', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[2],\"signType\":1}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-25 16:05:00');
+INSERT INTO `sys_oper_log` VALUES ('1534', '字典数据', '1', 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', '1', 'admin', null, '/system/dict/data', '127.0.0.1', '内网IP', '{\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"dictType\":\"order_opp\",\"dictLabel\":\"测试1\",\"createBy\":\"admin\",\"default\":false}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-25 16:05:00');
+INSERT INTO `sys_oper_log` VALUES ('1535', '字典数据', '1', 'com.ruoyi.web.controller.system.SysDictDataController.add()', 'POST', '1', 'admin', null, '/system/dict/data', '127.0.0.1', '内网IP', '{\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"dictType\":\"order_opp\",\"dictLabel\":\"测试666\",\"createBy\":\"admin\",\"default\":false}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-25 16:05:14');
+INSERT INTO `sys_oper_log` VALUES ('1536', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[2],\"signType\":2}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-25 16:05:15');
+INSERT INTO `sys_oper_log` VALUES ('1537', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":2,\"params\":{\"ids\":[2,3]},\"abnormal\":\"换地址\"}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"DD123456789 已成功拦截<br/>DD123456790 已成功拦截<br/>共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>2</span> 条，失败 <span style=\'color:red;\'>0</span> 条\"]}', '0', null, '2022-05-25 16:07:42');
+INSERT INTO `sys_oper_log` VALUES ('1538', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[2],\"signType\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-25 16:08:09');
+INSERT INTO `sys_oper_log` VALUES ('1539', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":1,\"params\":{\"ids\":[2]},\"abnormal\":\"换地址\"}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"DD123456789 已成功拦截<br/>共 <span style=\'color:blue;\'>1</span> 条订单，成功 <span style=\'color:green;\'>1</span> 条，失败 <span style=\'color:red;\'>0</span> 条\"]}', '0', null, '2022-05-26 09:32:03');
+INSERT INTO `sys_oper_log` VALUES ('1540', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderValue()', 'POST', '1', 'admin', null, '/sales/order/updateOrderValue', '127.0.0.1', '内网IP', '{\"params\":{\"ids\":[2]},\"status\":4}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 09:33:23');
+INSERT INTO `sys_oper_log` VALUES ('1541', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[3],\"signType\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 09:37:07');
+INSERT INTO `sys_oper_log` VALUES ('1542', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderValue()', 'POST', '1', 'admin', null, '/sales/order/updateOrderValue', '127.0.0.1', '内网IP', '{\"params\":{\"ids\":[3]},\"status\":4}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 09:37:23');
+INSERT INTO `sys_oper_log` VALUES ('1543', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[2],\"signType\":\"6\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 09:42:12');
+INSERT INTO `sys_oper_log` VALUES ('1544', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[3],\"signType\":\"10\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 09:42:19');
+INSERT INTO `sys_oper_log` VALUES ('1545', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderDa()', 'POST', '1', 'admin', null, '/sales/order/updateOrderDa', '127.0.0.1', '内网IP', '{\"params\":{\"ids\":[2,3]}}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"<span style=\'font-weight: bold;\'>DD123456790</span> 提交失败，原因：<span style=\'color:red;\'>产品SKU不存在【问题件】</span><br/>\",\"<span style=\'font-weight: bold;\'>DD123456789</span> <span style=\'color:green;\'>提交成功</span><br/>\",\"共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>1</span> 条，失败 <span style=\'color:red;\'>1</span> 条\"]}', '0', null, '2022-05-26 09:42:45');
+INSERT INTO `sys_oper_log` VALUES ('1546', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[2],\"signType\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 09:47:03');
+INSERT INTO `sys_oper_log` VALUES ('1547', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[3],\"signType\":\"2\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 09:47:15');
+INSERT INTO `sys_oper_log` VALUES ('1548', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderSign()', 'POST', '1', 'admin', null, '/sales/order/updateOrderSign', '127.0.0.1', '内网IP', '{\"ids\":[2],\"signType\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 09:47:25');
+INSERT INTO `sys_oper_log` VALUES ('1549', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderDa()', 'POST', '1', 'admin', null, '/sales/order/updateOrderDa', '127.0.0.1', '内网IP', '{\"params\":{\"ids\":[2,3]}}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"<span style=\'font-weight: bold;\'>DD123456790</span> 提交失败，原因：<span style=\'color:red;\'>产品SKU不存在【问题件】</span><br/>\",\"<span style=\'font-weight: bold;\'>DD123456789</span> <span style=\'color:green;\'>提交成功</span><br/>\",\"共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>1</span> 条，失败 <span style=\'color:red;\'>1</span> 条\"]}', '0', null, '2022-05-26 09:47:41');
+INSERT INTO `sys_oper_log` VALUES ('1550', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderDa()', 'POST', '1', 'admin', null, '/sales/order/updateOrderDa', '127.0.0.1', '内网IP', '{\"params\":{\"ids\":[2,3]}}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"<span style=\'font-weight: bold;\'>DD123456790</span> 提交失败，原因：<span style=\'color:red;\'>产品SKU不存在【问题件】</span><br/>\",\"<span style=\'font-weight: bold;\'>DD123456789</span> <span style=\'color:green;\'>提交成功</span><br/>\",\"共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>1</span> 条，失败 <span style=\'color:red;\'>1</span> 条\"]}', '0', null, '2022-05-26 09:49:43');
+INSERT INTO `sys_oper_log` VALUES ('1551', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderCut()', 'POST', '1', 'admin', null, '/sales/order/updateOrderCut', '127.0.0.1', '内网IP', '{\"signType\":1,\"params\":{\"ids\":[2,3]},\"abnormal\":\"换地址\"}', '{\"msg\":\"操作成功\",\"code\":200,\"data\":[\"DD123456789 已成功拦截<br/>DD123456790 已成功拦截<br/>共 <span style=\'color:blue;\'>2</span> 条订单，成功 <span style=\'color:green;\'>2</span> 条，失败 <span style=\'color:red;\'>0</span> 条\"]}', '0', null, '2022-05-26 16:19:45');
+INSERT INTO `sys_oper_log` VALUES ('1552', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderValue()', 'POST', '1', 'admin', null, '/sales/order/updateOrderValue', '127.0.0.1', '内网IP', '{\"params\":{\"ids\":[2,3]},\"status\":4}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 16:26:27');
+INSERT INTO `sys_oper_log` VALUES ('1553', '订单管理', '2', 'com.ruoyi.order.controller.OrderController.updateOrderValue()', 'POST', '1', 'admin', null, '/sales/order/updateOrderValue', '127.0.0.1', '内网IP', '{\"signType\":0,\"params\":{\"ids\":[2,3]},\"status\":7}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2022-05-26 16:28:22');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -3844,7 +3893,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '103', null, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2022-05-24 18:38:52', 'admin', '2022-02-11 10:28:21', '', '2022-05-24 18:38:51', '管理员');
+INSERT INTO `sys_user` VALUES ('1', '103', null, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2022-05-26 15:54:38', 'admin', '2022-02-11 10:28:21', '', '2022-05-26 15:54:38', '管理员');
 INSERT INTO `sys_user` VALUES ('2', '105', null, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2', '127.0.0.1', '2022-02-11 10:28:21', 'admin', '2022-02-11 10:28:21', '', null, '测试员');
 INSERT INTO `sys_user` VALUES ('3', '100', null, '马大炮', '马大炮', '00', '', '', '0', '', '$2a$10$6KPknc5zg6.m8x2q2xNWxOmsJTPtWO7q367.mK2pk/wwbYBEpDmbm', '0', '2', '127.0.0.1', '2022-02-16 11:08:14', 'admin', '2022-02-16 10:30:09', 'admin', '2022-02-16 11:08:14', null);
 INSERT INTO `sys_user` VALUES ('4', '102', '2', 'wenger', '马大炮', '00', '', '', '0', '', '$2a$10$skvHKhU5Cv.m1vxZwDXVQOLC9saXkWkd2Obc6iU791XUD6Rz3/qhm', '0', '0', '127.0.0.1', '2022-03-21 17:45:44', 'admin', '2022-02-22 18:01:49', 'admin', '2022-05-10 11:31:00', null);

@@ -1161,7 +1161,7 @@ export default {
     /** 已发货 */
     //转冻结
     transferFreezing(status){
-      alert("转冻结"+status);
+      this.updateOrderStatus(4);
     },
     /** 冻结中 */
     //转已发货
@@ -1286,6 +1286,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.form.status = type;
+        this.form.signType = 0;
         this.form.params.ids = this.ids;
         updateOrderStatus(this.form).then(response => {
           this.$message({
