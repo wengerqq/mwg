@@ -601,7 +601,7 @@ export default {
         this.roleOptions = response.roles;
         this.form.postIds = response.postIds;
         this.form.roleIds = response.roleIds;
-        this.form.causeId = response.data.causeId.toString();
+        this.form.causeId = response.data.causeId.toString();//122
         this.open = true;
         this.title = "修改用户";
         this.form.password = "";
