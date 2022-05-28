@@ -64,10 +64,6 @@
 
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-hello</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-activiti</artifactId>
         </dependency>
 
