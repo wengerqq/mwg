@@ -135,4 +135,7 @@ export const loadView = (view) => {
   }
 }
 
+
+
+
 export default permission

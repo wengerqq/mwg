@@ -301,14 +301,17 @@ public class OrderServiceImpl implements IOrderService
             }
             if(a > 0){
                 o.setStatus(6L);
+                o.setSignType(0L);
                 six += "<span style='font-weight: bold;'>"+o.getOrderId()+"</span> 提交失败，原因：<span style='color:red;'>产品SKU不存在【问题件】</span><br/>";
                 failNum++;
             }else if(b>0){
                 o.setStatus(5L);
+                o.setSignType(0L);
                 five += "<span style='font-weight: bold;'>"+o.getOrderId()+"</span> 提交失败，原因：<span style='color:red;'>库存不足或没有采购记录【缺货】</span><br/>";
                 failNum++;
             }else{
                 o.setStatus(2L);
+                o.setSignType(0L);
                 o.setDeliveryWarehouseId(order.getDeliveryWarehouseId());
                 o.setWarehouseDeliveryId(order.getWarehouseDeliveryId());
                 two += "<span style='font-weight: bold;'>"+o.getOrderId()+"</span> <span style='color:green;'>提交成功</span><br/>";

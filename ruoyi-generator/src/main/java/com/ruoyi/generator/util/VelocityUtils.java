@@ -246,6 +246,7 @@ public class VelocityUtils
         if (StringUtils.isNotNull(subGenTable))
         {
             importList.add("java.util.List");
+
         }
         for (GenTableColumn column : columns)
         {

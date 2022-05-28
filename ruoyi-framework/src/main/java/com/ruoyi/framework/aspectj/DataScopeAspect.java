@@ -1,8 +1,13 @@
 package com.ruoyi.framework.aspectj;
 
+import com.ruoyi.common.utils.ServletUtils;
+import com.ruoyi.common.utils.spring.SpringUtils;
+import com.ruoyi.framework.web.service.TokenService;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -11,6 +16,8 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+
+import java.lang.reflect.Method;
 
 /**
  * 数据过滤处理
@@ -55,13 +62,19 @@ public class DataScopeAspect
     public void doBefore(JoinPoint point, DataScope controllerDataScope) throws Throwable
     {
         clearDataScope(point);
-        handleDataScope(point, controllerDataScope);
+        handleDataScope(point);
     }
 
-    protected void handleDataScope(final JoinPoint joinPoint, DataScope controllerDataScope)
+    protected void handleDataScope(final JoinPoint joinPoint)
     {
+//获得注解
+        DataScope controllerDataScope = getAnnotationLog(joinPoint);
+        if (controllerDataScope == null) {
+
+            return;
+        }
         // 获取当前的用户
-        LoginUser loginUser = SecurityUtils.getLoginUser();
+        LoginUser loginUser = SpringUtils.getBean(TokenService.class).getLoginUser(ServletUtils.getRequest());
         if (StringUtils.isNotNull(loginUser))
         {
             SysUser currentUser = loginUser.getUser();
@@ -145,5 +158,21 @@ public class DataScopeAspect
             BaseEntity baseEntity = (BaseEntity) params;
             baseEntity.getParams().put(DATA_SCOPE, "");
         }
+    }
+
+    /**
+     * 是否存在注解，如果存在就获取
+     */
+    private DataScope getAnnotationLog(JoinPoint joinPoint)
+    {
+        Signature signature = joinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) signature;
+        Method method = methodSignature.getMethod();
+
+        if (method != null)
+        {
+            return method.getAnnotation(DataScope.class);
+        }
+        return null;
     }
 }

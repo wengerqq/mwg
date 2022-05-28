@@ -9,6 +9,7 @@
             :label="item.dictName"
             :value="item.dictType"
           />
+
         </el-select>
       </el-form-item>
       <el-form-item label="字典标签" prop="dictLabel">

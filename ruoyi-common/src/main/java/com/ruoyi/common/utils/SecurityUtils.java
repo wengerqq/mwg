@@ -70,6 +70,7 @@ public class SecurityUtils
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
         }
     }

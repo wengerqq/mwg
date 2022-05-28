@@ -153,8 +153,8 @@ public class Order extends BaseEntity
     @Excel(name = "终审标志")
     private Long finalMark;
 
-    /** 账单地址 */
-    @Excel(name = "账单地址")
+    /** 异常信息 */
+    @Excel(name = "异常信息")
     private String abnormal;
 
     /** 审核时间 */
